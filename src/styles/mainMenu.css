@@ -1,0 +1,89 @@
+/*
+.navbarMain{
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    
+}
+
+.ul-container{
+    width: 80%;
+    
+    text-align: center;
+    list-style: none;
+    background:  #cda32f;
+    border: solid 3px black;
+    border-radius: 3rem;
+}
+
+.ul-container li{
+    font-size: 1.5rem;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-family:'Buxton Sketch';
+}
+*/
+
+.mainDiv{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    margin-right: 4rem;
+    margin-left: 4rem;
+
+    /*border: solid rosybrown;*/
+}
+
+.rowMain{
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*---------------------------------------------------*/
+label{
+    width: 70%;
+    height: 3rem;
+    display:flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    border: solid 3px black;
+    border-radius: 10px;
+    margin: 0.5rem;
+    background-color: rgb(221, 194, 41);
+    font-size: 20px;
+    font-family:'Buxton Sketch';
+}
+
+img{
+    width:120px;
+    height:120px;
+    border-radius:100px;
+    border:4px solid rgb(0, 0, 0);
+}
+
+img:hover{
+    width:150px;
+    height:150px;
+    border-radius:100px;
+    border:4px solid rgb(0, 0, 0);
+}
+
+
+/*//////////////////////////////////////////////////////////////////////*/

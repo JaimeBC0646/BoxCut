@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/bg.css">
+    <link rel="stylesheet" href="./styles/login.css">
+    
+    <title>SAGIIV_v1</title>
+</head>
+<body>
+    <div class="loginDiv">
+
+        <img src="./imgResources/userIcon.png" class="imgLogin" alt="userImg">
+        
+        <div class="loginForm">
+            
+            <input type="text" id="txtIdentity" placeholder="User">
+
+            <input type="password" id="txtPassword" placeholder="Password">
+
+
+            <!--
+            <select id="txtEmployeeType">
+                <option value="">[Seleccionar sesion]</option>
+                <option value="1">Administrador</option>
+                <option value="2">Empleado</option>
+            </select>
+            -->
+            <a  href="./accessAdmin/adminMenu.html" id="btnlogin">Login</a>
+            <!--<button id="btnLogin">Iniciar sesion</button>-->
+            
+        </div>
+       
+    </div>
+    
+    <script src="../src/sqlMoves/loginAuth.js"></script>
+</body>
+</html>

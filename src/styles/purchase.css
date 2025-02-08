@@ -1,0 +1,169 @@
+.rdbDiv{
+    display: flex;
+    align-items: center;
+    justify-content:space-around;
+    margin-right: 11rem;
+    margin-left: 11rem;
+    /*border: solid rgba(255, 68, 0, 0.901);*/
+}
+.rdbOption{
+    display: flex;
+    flex-direction: row;
+    /*border: solid purple;*/
+}
+.rdbOption label{
+    font-size: 1.5rem;
+}
+.rdbOption input{
+    width: 20px;
+    height: 20px;
+}
+
+
+
+
+.purchasesDiv{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 3em;
+    margin-left: 3rem;
+    margin-bottom: 4rem;
+    /*border: solid cyan;*/
+} 
+#dtInput:enabled{
+    width: 25%;
+    font-size: 16px;
+    font-weight: bold;
+    font-family:'Buxton Sketch';
+    background-color: #F0F0F0;
+    color: rgb(0, 0, 0);
+    padding: 5px;
+    border: 1.5px solid rgb(6, 6, 6);
+    border-radius: 5px;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+
+
+#dtInput:disabled{
+    width: 25%;
+    font-size: 16px;
+    font-weight: bold;
+    font-family:'Buxton Sketch';
+    background-color: #af9999;
+    color: rgb(116, 106, 106);
+    padding: 5px;
+    border: 1.5px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+#periodSelector{
+    font-size: 16px;
+    font-weight: bold;
+    font-family:'Buxton Sketch';
+    background-color: #ffffff;
+    color: black;
+    padding: 5px;
+    border: 1.5px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    text-align: center;
+}
+
+#btnView_Dtpurchase, #btnView_DtInvestment{
+    background-color: rgb(221, 194, 41);
+    border: solid 2px black;
+    border-radius: 10px;
+    font-size: 20px;
+    font-family:'Buxton Sketch';
+}
+#btnView_Dtpurchase:hover, #btnView_DtInvestment:hover{
+    background-color: #ff590097;
+    border: solid 2px black;
+    border-radius: 10px;
+    font-size: 20px;
+    font-family:'Buxton Sketch';
+}
+
+.purch{
+    width: 30%;
+}
+.dt_purch{
+    width: 65%;
+}
+/*
+#btnGenerateReport{
+    height: 3rem;
+    display:flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    border: solid 3px black;
+    border-radius: 10px;
+    margin: 1rem;
+    background-color: rgb(221, 194, 41);
+    font-size: 20px;
+    font-family:'Buxton Sketch';
+}
+
+#btnGenerateReport:hover{
+    height: 3rem;
+    display:flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin: 0.5rem;
+    padding: 0.2rem;
+    font-size: 18px;
+    font-family:'Buxton Sketch';
+}
+
+*/
+
+/*---------------------------------------------------*/
+
+/*
+label{
+    height: 3rem;
+    display:flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    
+    font-family:'Buxton Sketch';
+}
+*/
+
+
+table {
+    background-color: #f2f2f2;
+    border-collapse: collapse;
+    
+    width: 100%;
+    font-size: 1rem;
+}
+th, td {
+    padding: 10px;
+    
+    /*border: solid 0.5px;*/
+}
+tr {
+    
+   border: solid 3px;
+}
+tbody tr:hover {
+    background-color: #f8a558;
+}
+
+.scroll-table {   
+    max-height: 350px; /* Altura máxima para ver registros */
+    overflow-y: auto;  /* Coloca scrollbar vertical*/
+    border: 3px solid;
+}
+
+
+/*//////////////////////////////////////////////////////////////////////*/

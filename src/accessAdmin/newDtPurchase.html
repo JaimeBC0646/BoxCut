@@ -1,0 +1,79 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/bg.css">
+    <link rel="stylesheet" type="text/css" href="../styles/newDtPurchase.css">
+
+    <title>boxCut</title>
+</head>
+
+<body>
+    <div class="mod">
+        <a href="./purchases.html"><img src="../imgResources/roundedArrow.png" alt="btnBack" class="btnBack"></a>
+        <h1>NEW PURCHASE & DETAILS</h1>
+    </div>
+
+    <form id="detailPurchaseForm">
+
+        <div class="newPurchaseDiv">
+            <h1>Purchase</h1>
+
+            <div class="datePurchase">
+                <label>Date:</label>
+                <input type="date" id="dtP_Input">
+            </div>
+
+            <div class="card_dtList"></div>
+
+            <button>ADD PURCHASE</button>
+        </div>
+
+
+        <div class="newDtPurchaseDiv">
+            <h1>Details</h1>
+            <div class="purchaseInput">
+                <label for="product">Product:</label>
+                <input type="text" id="txt_product" name="product">
+            </div>
+
+            <div class="purchaseInput">
+                <label for="description">Description:</label>
+                <textarea id="txt_description" name="description"></textarea>
+            </div>
+
+            <div class="purchaseInput">
+                <label for="price">Price:</label>
+                <input type="text" id="txt_price" name="price">
+            </div>
+
+            <div class="purchaseInput">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="txt_quantity" name="quantity">
+            </div>
+
+            <div class="purchaseInput">
+                <label for="store">Store / Place:</label>
+                <select id="txt_store" name="txt_store">
+                    <option>Select branchstore</option>
+                </select>
+            </div>
+
+            <div class="purchaseInput">
+                <label for="relevance">Relevance:</label>
+                <select id="txt_relevance" name="txt_relevance">
+                    <option>Select relevance</option>
+                </select>
+            </div>
+
+            <button>ADD DETAIL</button>
+        </div>
+    </form>
+
+    <script src="../sqlMoves/add_dtPurchase.js"></script>
+
+</body>
+
+</html>

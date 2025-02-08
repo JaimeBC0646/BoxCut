@@ -1,0 +1,51 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/bg.css">
+    <link rel="stylesheet" type="text/css" href="../styles/inventory.css">
+    <title>SAGIIV_v1 (admin)</title>
+</head>
+
+<body>
+    <nav class="navbarMain">
+        <ul class="ul-container">
+            <div class="sesionDiv">
+                <h1 id="userSesion">Sesion activa: <br></h1>
+            </div>
+            
+            <div>
+                <a href="./adminMenu.html"><li>MENU DE MODULOS</li></a>
+                <a href="./investments.html"><li>INVERSIONES</li></a>
+                <a href="./inventory.html"><li>INVENTARIO</li></a>
+                <a href="./sells.html"><li>VENTAS</li></a>
+                <a href="./digitalMenu.html"><li>MENU DIGITAL</li></a>
+                <a href="./backOrders.html"><li>PEDIDOS RETENIDOS</li></a>
+                <a href="../index.html"><li>CERRAR SESION</li></a>
+            </div>
+        </ul>
+    </nav>
+
+    <div class="titleMod">
+        <label>INVENTARIO</label>
+        <!--<a href="./inventory.html" class="btnRefresh">ACTUALIZAR</a>-->
+    </div>
+
+    <div class="rawMaterialDiv">
+        <div class="scroll-table">
+            <div id="diposables"></div>
+        </div>
+    </div>
+
+    <div class="rawMaterialDiv">
+        <div class="scroll-table">
+            <div id="ingridients"></div>
+        </div>
+    </div>
+
+    <script src="../sqlMoves/query-Inventory.js"></script>
+</body>
+
+</html>

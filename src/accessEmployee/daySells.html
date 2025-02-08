@@ -1,0 +1,63 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/bg.css">
+    <link rel="stylesheet" type="text/css" href="../styles/sells.css">
+    <title>SAGIIV_v1</title>
+</head>
+
+<body>
+    <nav class="navbarMain">
+        <ul class="ul-container">
+            <div class="sesionDiv">
+                <h1 id="userSesion">Sesion activa: <br></h1>
+            </div>
+            
+            <div>
+                <a href="./employeeMenu.html"><li>MENU DE OPERACIONES</li></a>
+                <a href="./daySells.html"><li>VENTAS DEL DIA</li></a>
+                <a href="./backOrders.html"><li>PEDIDOS RETENIDOS</li></a>
+                <a href="./digitalMenu.html"><li>MENU DIGITAL</li></a>
+                <a href="../index.html"><li>CERRAR SESION</li></a>
+                
+            </div>
+        </ul>
+    </nav>
+
+    
+    <div class="titleMod">
+        <label>VENTAS DEL DIA</label>
+    </div>
+
+    <div class="sellsDiv">
+        <div class="sellRow">
+            <div class="scroll-table">
+                <div id="daySells"></div>
+            </div>
+        </div>
+
+        <div class="sellRow">
+            <a href="../accessEmployee/newSell.html">+ NUEVA VENTA</a>
+            <button id="btnGenerateReport">+ NUEVA VENTA</button>
+            <button id="btnCloseWindow">CLOSE WINDOW X</button>
+        </div>
+    </div>
+
+    <div class="sellsDiv">
+        <div class="sellRow">
+            <div class="scroll-table">
+                <div id="dtDaySell"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="../sqlMoves/query-DaySells.js"></script>
+
+</body>
+
+</html>

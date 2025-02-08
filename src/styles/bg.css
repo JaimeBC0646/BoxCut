@@ -1,0 +1,120 @@
+body{
+/*background-color: #521908;*/
+/*background-color: #823919;*/
+background-color: #6d6a67;
+/*background-image: url("../imgResources/bgCoffee.png");*/
+font-family:'Arial';
+}
+
+
+
+/*INICIO - NAVBAR*/
+.navbarMain{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.sesionDiv{
+    width: 50%;
+    text-align: center;
+    background:  #ff590097;
+    border: solid 3px black;
+    border-radius: 3rem;
+    
+}
+.sesionDiv h1{
+    font-size: 1.5rem;
+}
+
+.ul-container{
+    width: 80%;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    list-style: none;
+    background:  #cda32f;
+    border: solid 3px black;
+    border-radius: 3rem;
+}
+
+.ul-container li{
+    display: inline-block;
+    font-size: 1.5rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    transition: all ease-in-out 250ms;
+}
+
+.ul-container a li{
+    font-size: 1.5rem;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-family:'Buxton Sketch';
+}
+
+.ul-container li:hover{
+    background: #ff9d0a;
+    border-radius: 40px;
+}
+/*FIN - NAVBAR*/
+
+
+
+/* INICIO - TITLE & ELEMENTS */
+.titleMod{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-right: 4rem;
+    margin-left: 4rem;
+    /*border: solid  green;*/
+}
+
+
+.rowMain{
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+.btnRefresh{
+    text-decoration: none;
+    color:black;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    text-align: center;
+    padding: 0.5rem;
+    border: solid;
+    border-radius: 10px;
+    background-color: rgb(221, 194, 41);
+    font-size: 1.5rem;
+    font-family:'Buxton Sketch';
+}
+
+.btnRefresh:hover{
+    font-size: 1.6rem;
+    padding: 0.6rem;
+}
+
+
+
+
+
+
+/*---------------------------------------------------
+
+label{
+    font-size: 3.5rem;
+    display: flex;
+    justify-content: center;;
+}*/

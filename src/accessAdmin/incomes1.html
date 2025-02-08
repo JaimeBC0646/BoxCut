@@ -1,0 +1,97 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/bg.css">
+    <link rel="stylesheet" type="text/css" href="../styles/sells.css">
+    <title>SAGIIV_v1 (admin)</title>
+</head>
+
+<body>
+    <nav class="navbarMain">
+        <ul class="ul-container">
+            <div class="sesionDiv">
+                <h1 id="userSesion">Sesion activa: <br></h1>
+            </div>
+
+            <div>
+                <a href="./adminMenu.html">
+                    <li>MENU DE MODULOS</li>
+                </a>
+                <a href="./investments.html">
+                    <li>INVERSIONES</li>
+                </a>
+                <a href="./inventory.html">
+                    <li>INVENTARIO</li>
+                </a>
+                <a href="./sells.html">
+                    <li>VENTAS</li>
+                </a>
+                <a href="./digitalMenu.html">
+                    <li>MENU DIGITAL</li>
+                </a>
+                <a href="./backOrders.html">
+                    <li>PEDIDOS RETENIDOS</li>
+                </a>
+                <a href="../index.html">
+                    <li>CERRAR SESION</li>
+                </a>
+            </div>
+        </ul>
+    </nav>
+
+    <div class="titleMod">
+        <label>INCOMES</label>
+    </div>
+
+    <div class="rdbDiv">
+        <div class="rdbOption">
+            <input type="radio" id="rdbGeneral" name="rdbQuery" value="general" checked>
+            <label class="rdbSellQuery">General consults</label>
+        </div>
+
+        <div class="rdbOption">
+            <input type="radio" id="rdbFilter" name="rdbQuery" value="filter">
+            <label class="rdbSellQuery">Filter by date</label>
+        </div>
+        <input type="date" id="dtInput" disabled>
+
+    </div>
+
+    <div class="sellsDiv">
+        <div class="sellRow">
+            <div class="scroll-table">
+                <div id="investment"></div>
+            </div>
+        </div>
+
+        <div class="sellRow">
+            <select id="periodSelector">
+                <option value="">[Seleccionar periodo]</option>
+                <option value="diario">Diario</option>
+                <option value="mensual">Mensual</option>
+                <option value="semanal">Semanal</option>
+            </select>
+            <button id="btnGenerateReport">GENERAR REPORTE</button>
+        </div>
+    </div>
+
+    <div class="sellsDiv2">
+        <div class="sellRow">
+            <div class="scroll-table">
+                <div id="dtInvestments"></div>
+            </div>
+        </div>
+        <div class="sellRow2">
+            <div class="dtSelInfo">Cantidad de productos: []</div>
+            <div class="dtSelInfo">Total de compra: $0.00</div>
+        </div>
+    </div>
+
+
+    <script src="../sqlMoves/query-DtInvestments.js"></script>
+</body>
+
+</html>

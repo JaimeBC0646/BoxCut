@@ -1,0 +1,98 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/bg.css">
+    <link rel="stylesheet" type="text/css" href="../styles/purchase.css">
+    <title>SAGIIV_v1 (admin)</title>
+</head>
+
+<body>
+    <nav class="navbarMain">
+        <ul class="ul-container">
+            <div class="sesionDiv">
+                <h1 id="userSesion">Sesion activa: <br></h1>
+            </div>
+
+            <div>
+                <a href="./adminMenu.html">
+                    <li>MAIN MENU</li>
+                </a>
+                <a href="./purchases.html">
+                    <li>PURCHASES</li>
+                </a>
+                <a href="../index.html">
+                    <li>LOG OUT</li>
+                </a>
+            </div>
+        </ul>
+    </nav>
+
+
+    <div class="titleMod">
+        <label>PURCHASES</label>
+    </div>
+
+    <div class="rdbDiv">
+        <div class="rdbOption">
+            <input type="radio" id="rdbGeneral" name="rdbQuery" value="general" checked>
+            <label class="rdbpurchaseQuery">General</label>
+        </div>
+
+        <div class="rdbOption">
+            <input type="radio" id="rdbFilter" name="rdbQuery" value="filter">
+            <label class="rdbpurchaseQuery">Filter by date</label>
+        </div>
+        <input type="date" id="dtInput" disabled>
+
+    </div>
+
+
+    <!-- TABLES: PURCHASE & DT -->
+    <div class="purchasesDiv">
+        <div class="purchaseRow purch">
+            <div class="scroll-table">
+                <div id="purchase"></div>
+            </div>
+        </div>
+
+        <div class="purchaseRow dt_purch">
+            <div class="scroll-table">
+                <div id="dtPurchase"></div>
+            </div>
+        </div>
+        <!--
+        <div class="purchaseRow">
+            <select id="periodSelector">
+                <option value="">[Seleccionar periodo]</option>
+                <option value="diario">Diario</option>
+                <option value="mensual">Mensual</option>
+                <option value="semanal">Semanal</option>
+            </select>
+            <button id="btnGenerateReport">GENERAR REPORTE</button>
+        </div>
+        -->
+    </div>
+
+    <Button> <a href="./newDtPurchase.html" >OK</a> </Button>
+
+    <!--
+    <div class="purchasesDiv2">
+        <div class="purchaseRow">
+            <div class="scroll-table">
+                <div id="dtPurchase"></div>
+            </div>
+        </div>
+    </div>
+    -->
+
+
+
+    <script src="../sqlMoves/query-Purchases.js"></script>
+    <script src="../sqlMoves/add_dtPurchase.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/bg.css">
+    <link rel="stylesheet" type="text/css" href="../imgResources/products/">
+    <title>SAGIIV_v1</title>
+</head>
+
+<body>
+    <nav class="navbarMain">
+        <ul class="ul-container">
+            <a href="../imgResources/">
+                <li>MENU DE MODULOS</li>
+            </a>
+
+        </ul>
+    </nav>
+
+
+    <div class="titleMod">
+        <label> VENTAS</label>
+    </div>
+
+    <div class="rdbDiv">
+        <div class="rdbOption">
+            <input type="radio" id="rdbGeneral" name="rdbQuery" value="general" checked>
+            <label class="rdbSellQuery">Consulta General</label>
+        </div>
+
+        <div class="rdbOption">
+            <input type="radio" id="rdbFilter" name="rdbQuery" value="filter">
+            <label class="rdbSellQuery">Filtrar por Fecha</label>
+        </div>
+        <input type="date" id="dtInput" disabled>
+
+    </div>
+    <div class="sellsDiv">
+        <div class="sellRow">
+            <div class="scroll-table">
+                <div id="sell"></div>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="sellsDiv">
+        <div class="sellRow">
+            <div class="scroll-table">
+                <div id="dtSell"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="../sqlMoves/query-DtSells.js"></script>
+
+</body>
+
+</html>
