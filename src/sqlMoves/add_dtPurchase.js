@@ -1,4 +1,4 @@
-const detailPurchaseForm = document.getElementById('detailPurchaseForm');
+const newDtPurchaseDiv = document.getElementById('newDtPurchaseDiv');
 
 const { remote } = require('electron');
 const main = remote.require('./main.js');
@@ -66,14 +66,36 @@ const charge_revelances = async () => {
 
 
 
-/* Form: detailPurchaseForm  -|START|- */
+/* Form: newDtPurchaseDiv  -|START|- */
 var dateFilter;
 const datePurchase_filter = document.getElementById('dtP_Input');
-
+const btncompra = document.getElementById('btn_addPurchase');
 datePurchase_filter.addEventListener('change', () => {
     dateFilter = datePurchase_filter.value
+    datePurchase_filter.disabled = true;
     //console.log('Fecha: '+ dateFilter);
+
+    btncompra.disabled = false;
 })
+
+
+const query_IdP = async (dateF) => {
+    var result = await main.getIdByDate(dateF);
+    console.log(result)
+    
+    if(result.length>0){
+        console.log("ID LOCALIZADO: ", result[0].idPurchase)
+        return result[0].idPurchase;
+    }
+    else{
+        console.log("INSERTANDO FECHA")
+        await main.newDate(dateF);
+        query_IdP(dateF);
+    }
+        
+}
+
+
 
 const product = document.getElementById('txt_product');
 const description = document.getElementById('txt_description');
@@ -82,48 +104,49 @@ const quantity = document.getElementById('txt_quantity');
 const branchstore = document.getElementById('txt_store');
 const relevance = document.getElementById('txt_relevance');
 
-detailPurchaseForm.addEventListener('submit', async (err) => {
+newDtPurchaseDiv.addEventListener('submit', async (err) => {
     err.preventDefault();
-    //console.log('Fecha: '+ dateFilter);
+    //console.log('Date: '+ dateFilter);
 
 
     let newDetailPurchase = {};
 
-    if(dateFilter != null || dateFilter ==""){
-        let result = [];
-        result = await main.getIdByDate(dateFilter);
-        //console.log('ID: ', result[0].idPurchase)
-
-        if(result[0].idPurchase != null){
+    if (dateFilter != null || dateFilter == "") {
+        query_IdP(dateFilter);
+        
+        var id_P = await query_IdP(dateFilter)
+        if (id_P != null) {
+            
             newDetailPurchase = {
                 vchProduct: product.value,
                 vchDescription: description.value,
                 fltPrice: parseFloat(price.value),
                 intQuantity: parseInt(quantity.value),
                 //subtotal is auto
-                idPurchase_fk: result[0].idPurchase,
+                idPurchase_fk: id_P,
                 idBranchstore_fk: branchstore.value,
                 idRelevance_fk: relevance.value
 
             }
+            purchaseDetails.push(newDetailPurchase);
+            update_DtPreview();
+            clearForm();
+            
         }
+        
     }
-    else{
+    else {
         console.log("Seleecciona una fecha!")
     }
-    //console.log(newDetailPurchase);
+    //console.log("newDetailPurchase", newDetailPurchase);
 
-
-    purchaseDetails.push(newDetailPurchase);
-    update_DtPreview();
-    clearForm();
 
 
     //const result = await main.newSell(newDetailPurchase)
     //console.log(result)
 
 })
-/* Form: detailPurchaseForm  -|END|- */
+/* Form: newDtPurchaseDiv  -|END|- */
 
 
 
@@ -132,29 +155,31 @@ let purchaseDetails = []; // Save details purchase temporaly
 const cardDtList = document.querySelector('.card_dtList'); // Div view for the details
 
 function update_DtPreview() {
-    cardDtList.innerHTML = ''; // Limpiar la lista antes de actualizar
+    cardDtList.innerHTML = ''; // Clean list before update
 
     purchaseDetails.forEach((detail, index) => {
         let card = document.createElement('div');
         card.classList.add('purchaseCard');
         card.innerHTML = `
-            <p><strong>Product:</strong> ${detail.vchProduct}</p>
-            <p><strong>Price:</strong> ${detail.fltPrice}</p>
-            <p><strong>Quantity:</strong> ${detail.intQuantity}</p>
-            <p><strong>Subtotal:</strong> $${detail.fltPrice * detail.intQuantity}.00</p>
+            <div class="infoDt">
+                <p><strong>Product: </strong> ${detail.vchProduct}</p>
+                <p>$${detail.fltPrice} * ${detail.intQuantity} = $${detail.fltPrice * detail.intQuantity}.00</p>
+            </div>
             <button onclick="removeDetail(${index})">Eliminar</button>
         `;
+        //console.log("detail",detail)
         cardDtList.appendChild(card);
+        //console.log("card", card)
     });
+
 }
 
-/* Función para eliminar un detalle de la lista */
+
 function removeDetail(index) {
     purchaseDetails.splice(index, 1);
     update_DtPreview();
 }
 
-/* Función para limpiar los campos del formulario después de agregar un detalle */
 function clearForm() {
     product.value = '';
     description.value = '';

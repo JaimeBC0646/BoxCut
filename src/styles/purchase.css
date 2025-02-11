@@ -81,10 +81,7 @@
 }
 #btnView_Dtpurchase:hover, #btnView_DtInvestment:hover{
     background-color: #ff590097;
-    border: solid 2px black;
-    border-radius: 10px;
-    font-size: 20px;
-    font-family:'Buxton Sketch';
+    cursor: pointer;
 }
 
 .purch{
@@ -109,11 +106,7 @@
 }
 
 #btnGenerateReport:hover{
-    height: 3rem;
-    display:flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
+    
     margin: 0.5rem;
     padding: 0.2rem;
     font-size: 18px;

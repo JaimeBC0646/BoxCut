@@ -16,9 +16,9 @@
         <h1>NEW PURCHASE & DETAILS</h1>
     </div>
 
-    <form id="detailPurchaseForm">
+    <div class="detailPurchaseForm">
 
-        <div class="newPurchaseDiv">
+        <form id="newPurchaseDiv">
             <h1>Purchase</h1>
 
             <div class="datePurchase">
@@ -26,13 +26,15 @@
                 <input type="date" id="dtP_Input">
             </div>
 
-            <div class="card_dtList"></div>
+            <div class="scroll-table">
+                <div class="card_dtList"></div>
+            </div>
 
-            <button>ADD PURCHASE</button>
-        </div>
+            <button id="btn_addPurchase" disabled="true">ADD PURCHASE</button>
+        </form>
 
 
-        <div class="newDtPurchaseDiv">
+        <form id="newDtPurchaseDiv">
             <h1>Details</h1>
             <div class="purchaseInput">
                 <label for="product">Product:</label>
@@ -69,8 +71,9 @@
             </div>
 
             <button>ADD DETAIL</button>
-        </div>
-    </form>
+        </form>
+    </div>
+
 
     <script src="../sqlMoves/add_dtPurchase.js"></script>
 

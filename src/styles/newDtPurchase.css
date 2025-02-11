@@ -21,7 +21,7 @@
 }
 
 
-#detailPurchaseForm{
+.detailPurchaseForm{
     display: flex;
     flex-direction: Row;
     margin-left: 2rem;
@@ -33,7 +33,7 @@
 /* ---------------------------------------- */
 
 
-.newPurchaseDiv{
+#newPurchaseDiv{
     width: 30%;
     display: flex;
     flex-direction: column;
@@ -47,26 +47,49 @@
     width: 80%;
     margin-bottom: 1rem;
 }
-#dtInput{
+#dtP_Input{
     width: 75%;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     font-style: oblique;
     font-weight: bold;
 }
-.card_dtList{
+
+
+
+.scroll-table { 
     background-color: rgb(228, 199, 162);
-    border: solid 0.2rem;
-    border-radius: 10px;
-    width: 80%;
+    width: 85%;
     height: 22rem;
+    max-height: 22rem; /* Max-height to see rows */
+    overflow-y: auto;  /* Vertical scrollbar*/
+    border: 3px solid;
+    
+}
+.card_dtList{
+    height: 100%;
 }
 
+
+.purchaseCard {
+    display: flex;
+    flex-direction: row;
+    justify-content:left;
+    align-items: center;
+    /*width: 22%;*/
+    border-bottom: solid 3px;
+    padding: 0.5rem;
+}
+
+.infoDt {
+    /*border: solid red;*/
+    width: 65%;
+}
 
 /* ---------------------------------------- */
 
 
 
-.newDtPurchaseDiv{
+#newDtPurchaseDiv{
     width: 65%;
     display: flex;
     flex-direction: column;

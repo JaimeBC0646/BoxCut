@@ -21,6 +21,24 @@ async function loginQuery(identity, password) {
 
 
 // PURCHASES
+async function newDate(dtDate) {
+  try {
+    const conn = await getConnection();
+    const result = await conn.query("INSERT INTO tbl_purchases (dtDate) VALUES (DATE(?));", dtDate)
+    //const result = await conn.query('CALL SP_', detailpurchase)
+
+    new Notification({
+      title: 'Success',
+      body: 'New date registered '
+    }).show();
+
+    dtDate.id = result.insertId
+    return dtDate
+  }
+  catch (error) {
+    console.log(error)
+  }
+}
 
 async function getIdByDate(dtDate) {
   const query = "SELECT idPurchase FROM tbl_purchases WHERE DATE(dtDate) = DATE(?);"
@@ -29,6 +47,10 @@ async function getIdByDate(dtDate) {
   //console.log(results)
   return results;
 }
+
+
+
+
 
 
 async function getBranchstores() {
@@ -133,76 +155,6 @@ async function getDetailPurchases(idpurchase) {
 
 
 
-// Investments
-
-async function newInvestment(detailInvestment) {
-  try {
-    const conn = await getConnection();
-    detailInvestment.fltPrecio = parseFloat(detailInvestment.fltPrecio)
-    const result = await conn.query('INSERT INTO tbldetalleInversion SET ?', detailInvestment)
-    //const result = await conn.query('CALL SP_', detailInvestment)
-
-    new Notification({
-      title: 'Inversion completada',
-      body: 'Nueva compra de inversion registrada'
-    }).show();
-
-    detailInvestment.id = result.insertId
-    return detailInvestment
-  }
-  catch (error) {
-    console.log(error)
-  }
-}
-
-async function getInvestments(option, year, month, day) {
-  let query = "";
-  /*let queryResponsable = "SELECT ";*/
-  if (option === "general") {
-    query = "SELECT * FROM vwinversion"
-  }
-  else if (option === "filter") {
-    query = "SELECT `tblinversiones`.`idInversion` AS `idInversion`, DATE_FORMAT(dtFecha, '%a, %d/%m/%y') AS dtFecha, tmHora, fltMontoPago, tblempleado.vchNombre AS Responsable"
-      + " FROM tblinversiones INNER JOIN tblempleado ON tblinversiones.idResponsable = tblempleado.idEmpleado"
-      + " WHERE YEAR(dtFecha) = " + year
-      + " AND MONTH(dtFecha) = " + month
-      + " AND DAY(dtFecha) =" + day
-  }
-
-  const conn = await getConnection();
-  const results = await conn.query(query)
-  //console.log("main op:"+ option+" yy:"+year+" mm:"+month+" dd:"+day);
-  /*console.log(results)*/
-  return results;
-}
-
-async function getDetailInvestments(idInvestment) {
-  let query = "SELECT vchDescripcion, intCantidad, fltPrecio, fltSubTotal, tbldetalleinversion.idInversion FROM tbldetalleinversion"
-    + " INNER JOIN tblinversiones ON tblinversiones.`idInversion` = tbldetalleinversion.`idInversion`"
-    + " WHERE tbldetalleinversion.`idInversion` =" + idInvestment;
-
-  const conn = await getConnection();
-  const results = await conn.query(query)
-  //console.log(results)
-  return results;
-}
-
-
-
-// Products
-async function getProducts(option) {
-  let query = "";
-  if (option === "drinks") {
-    query = "SELECT * FROM tblproductos WHERE idCategoriaProducto = 1"
-  }
-  else if (option === "desserts") {
-    query = "SELECT * FROM tblproductos WHERE idCategoriaProducto = 2"
-  }
-  const conn = await getConnection();
-  const results = await conn.query(query)
-  //console.log(results)
-  return results;
-}
 
 async function editProduct(id) {
   console.log(id);
@@ -273,7 +225,7 @@ module.exports = {
   createNewpurchaseFormWindow,
   loginQuery,
 
-
+  newDate,
   getIdByDate,
   getBranchstores,
   getRelevances,
