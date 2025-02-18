@@ -1,27 +1,30 @@
-
-.mod{
+.mod {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     /*border: solid rgb(255, 47, 47);*/
 }
-.mod a{
+
+.mod a {
     width: 5%;
     margin-right: 1rem;
 }
-.mod a img{
+
+.mod a img {
     width: 85%;
 }
-.mod a img:hover{
+
+.mod a img:hover {
     width: 100%;
 }
-.mod h1{
+
+.mod h1 {
     margin-left: 1rem;
 }
 
 
-.detailPurchaseForm{
+.detailPurchaseForm {
     display: flex;
     flex-direction: Row;
     margin-left: 2rem;
@@ -33,21 +36,30 @@
 /* ---------------------------------------- */
 
 
-#newPurchaseDiv{
-    width: 30%;
+#newPurchaseDiv {
+    width: 40%;
     display: flex;
     flex-direction: column;
     align-items: center;
     /*border: solid greenyellow;*/
 }
-.datePurchase{
+
+.datePurchase {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 80%;
     margin-bottom: 1rem;
 }
-#dtP_Input{
+
+.datePurchase img {
+    width: 1.5rem;
+    position: absolute;
+    margin-left: 7.5rem;
+    cursor: pointer;
+}
+
+#dtP_Input {
     width: 75%;
     letter-spacing: 3px;
     font-style: oblique;
@@ -56,16 +68,19 @@
 
 
 
-.scroll-table { 
+.scroll-table {
     background-color: rgb(228, 199, 162);
     width: 85%;
     height: 22rem;
-    max-height: 22rem; /* Max-height to see rows */
-    overflow-y: auto;  /* Vertical scrollbar*/
+    max-height: 22rem;
+    /* Max-height to see rows */
+    overflow-y: auto;
+    /* Vertical scrollbar*/
     border: 3px solid;
-    
+
 }
-.card_dtList{
+
+.card_dtList {
     height: 100%;
 }
 
@@ -73,7 +88,7 @@
 .purchaseCard {
     display: flex;
     flex-direction: row;
-    justify-content:left;
+    justify-content: space-around;
     align-items: center;
     /*width: 22%;*/
     border-bottom: solid 3px;
@@ -89,14 +104,15 @@
 
 
 
-#newDtPurchaseDiv{
-    width: 65%;
+#newDtPurchaseDiv {
+    width: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
     /*border: solid rgb(255, 47, 203);*/
 }
-.purchaseInput{
+
+.purchaseInput {
     width: 70%;
     margin-bottom: 1rem;
     display: flex;
@@ -112,12 +128,14 @@
 
 
 /*---------------------------------------------------*/
-label{
+label {
     font-size: 1.5rem;
     /*border: solid purple;*/
 }
 
-input, textarea, select{
+input,
+textarea,
+select {
     background-color: rgb(228, 199, 162);
     width: 65%;
     border: solid 3px black;
@@ -131,16 +149,16 @@ input, textarea, select{
     text-align: end;
 }
 
-button{
+button {
     padding: 0.5rem;
-    margin-top: 1rem;
     border: solid 3px black;
     border-radius: 10px;
     font-size: 1rem;
     background-color: rgb(221, 194, 41);
-    font-family:'Buxton Sketch';
+    font-family: 'Buxton Sketch';
 }
-button:hover{
+
+button:hover {
     font-size: 1.2rem;
     background-color: rgb(221, 158, 41);
     cursor: pointer;

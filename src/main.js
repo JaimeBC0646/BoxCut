@@ -18,8 +18,6 @@ async function loginQuery(identity, password) {
 }
 
 
-
-
 // PURCHASES
 async function newDate(dtDate) {
   try {
@@ -51,8 +49,6 @@ async function getIdByDate(dtDate) {
 
 
 
-
-
 async function getBranchstores() {
 
   const query = "SELECT * FROM tbl_branchstore";
@@ -77,49 +73,40 @@ async function getRelevances() {
 
 
 
-/*
-async function newpurchase(detailpurchase) {
-  try {
-    const conn = await getConnection();
-    detailpurchase.fltPrecio = parseFloat(detailpurchase.fltPrecio)
-    const result = await conn.query('INSERT INTO tbldetalleventa SET ?', detailpurchase)
-    //const result = await conn.query('CALL SP_', detailpurchase)
-
-    new Notification({
-      title: 'Venta completada',
-      body: 'Nueva venta registrada'
-    }).show();
-
-    detailpurchase.id = result.insertId
-    return detailpurchase
-  }
-  catch (error) {
-    console.log(error)
-  }
-}
-  */
-
-
-
-
 
 async function newpurchase(detailpurchase) {
   try {
     const conn = await getConnection();
-    detailpurchase.fltPrecio = parseFloat(detailpurchase.fltPrecio)
-    const result = await conn.query('INSERT INTO tbldetalleventa SET ?', detailpurchase)
-    //const result = await conn.query('CALL SP_', detailpurchase)
+    
+    // Convertir valores a tipos correctos
+    detailpurchase.fltPrice = parseFloat(detailpurchase.fltPrice);
+    detailpurchase.intQuantity = parseInt(detailpurchase.intQuantity);
 
+    // Llamar al procedimiento almacenado
+    const result = await conn.query(
+      'CALL SP_Insert_DtPurchase(?, ?, ?, ?, ?, ?, ?)', 
+      [
+        detailpurchase.vchProduct, 
+        detailpurchase.vchDescription, 
+        detailpurchase.fltPrice, 
+        detailpurchase.intQuantity, 
+        detailpurchase.idPurchase_fk, 
+        detailpurchase.idBranchstore_fk, 
+        detailpurchase.idRelevance_fk
+      ]
+    );
+
+    // Mostrar notificación
     new Notification({
-      title: 'Venta completada',
-      body: 'Nueva venta registrada'
+      title: 'Compra completada',
+      body: 'Nuevo detalle de compra registrado'
     }).show();
 
-    detailpurchase.id = result.insertId
-    return detailpurchase
-  }
+    return result; // Retorna el resultado de la inserción
+  } 
   catch (error) {
-    console.log(error)
+    console.error("Error al registrar la compra:", error);
+    throw error; // Relanzar el error para manejarlo en otro lado si es necesario
   }
 }
 
@@ -197,24 +184,6 @@ function createWindow() {
 
 
 
-
-function createNewpurchaseFormWindow() {
-  const newpurchaseFormWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: true,
-      preload: path.join(__dirname, 'preload.js')
-    }
-  });
-
-  newpurchaseFormWindow.loadFile('./src/accessEmployee/newDtPurchase.html'); // Reemplaza la ruta con la de tu formulario
-  //newpurchaseFormWindow.webContents.openDevTools(); // Descomenta para abrir las DevTools
-}
-
-
 /*Ends Create windows App  */
 
 
@@ -222,7 +191,6 @@ function createNewpurchaseFormWindow() {
 /*Begin Exporting Functions / methods  */
 module.exports = {
   createWindow,
-  createNewpurchaseFormWindow,
   loginQuery,
 
   newDate,
