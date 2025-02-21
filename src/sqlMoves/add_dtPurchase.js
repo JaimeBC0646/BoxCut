@@ -1,7 +1,9 @@
 const newDtPurchaseDiv = document.getElementById('newDtPurchaseDiv');
 
+
 const { remote } = require('electron');
 const { escape } = require('promise-mysql');
+const { Notification } = require('electron')
 const main = remote.require('./main.js');
 
 
@@ -11,8 +13,9 @@ function chargeForm() {
     charge_revelances();
 }
 
-let branchstores = [];
+
 /* Charge data: Branchstore  -|START|- */
+let branchstores = [];
 const charge_branchstores = async () => {
     branchstores = await main.getBranchstores();
     //console.log(branchstores)
@@ -81,10 +84,11 @@ datePurchase_filter.addEventListener('change', async (err) => {
         datePurchase_filter.disabled = true;
         btnPurchase.disabled = false;
         btncancel.removeAttribute("hidden");
-        console.log(id_P);
+        // console.log(id_P);
     }
-    console.log(dateFilter)
+    // console.log(dateFilter)
 })
+/* Form: newDtPurchaseDiv  -|START|- */
 
 
 function dtRestart() {
@@ -99,23 +103,23 @@ const query_IdP = async (dateF) => {
     var result = await main.getIdByDate(dateF);
 
     if (result.length > 0) {
-        console.log("ID LOCALIZADO: ", result[0].idPurchase);
-        id_P = result[0].idPurchase; 
-        console.log("Id_P actual", id_P);
+        // console.log("ID LOCALIZADO: ", result[0].idPurchase);
+        id_P = result[0].idPurchase;
+        // console.log("Id_P actual", id_P);
     } else {
-        console.log("INSERTANDO FECHA");
+        // console.log("INSERTANDO FECHA");
         await main.newDate(dateF);
 
         // Wait to register the new ID
-        await new Promise(resolve => setTimeout(resolve, 100)); 
-        
+        await new Promise(resolve => setTimeout(resolve, 100));
+
         result = await main.getIdByDate(dateF); // Query again
 
         if (result.length > 0) {
             id_P = result[0].idPurchase;
-            console.log("Nuevo ID asignado:", id_P);
+            // console.log("Nuevo ID asignado:", id_P);
         } else {
-            console.error("No se pudo obtener el ID después de insertar la fecha.");
+            // console.error("No se pudo obtener el ID después de insertar la fecha.");
         }
     }
 };
@@ -135,8 +139,9 @@ newDtPurchaseDiv.addEventListener('submit', async (err) => {
     //console.log('Date: '+ dateFilter);
     let newDetailPurchase = {};
 
-    if (product.value == "" || description.value == "" || price.value == "" || quantity.value == "" || branchstore.value == "" || relevance.value == "") {
-        console.log("LLENR CAMPOS");
+    if (product.value == "" || description.value == "" || price.value == "" || quantity.value == "" || branchstore.value == "Select branchstore" || relevance.value == "Select relevance") {
+        showMessage("Please complete the form, filling all the spaces", "error");
+        // console.log("LLENR CAMPOS");
         return;
     }
     newDetailPurchase = {
@@ -151,6 +156,7 @@ newDtPurchaseDiv.addEventListener('submit', async (err) => {
 
     }
     purchaseDetails.push(newDetailPurchase);
+    //console.log("valor de branchstore: ", branchstore.value)
     update_DtPreview();
     clearForm();
     //console.log("newDetailPurchase", newDetailPurchase);
@@ -166,44 +172,98 @@ const newPurchaseDiv = document.getElementById('newPurchaseDiv');
 newPurchaseDiv.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    /*
     if (purchaseDetails.length === 0) {
-        console.log("No hay detalles agregados.");
+        showMessage("No details in list. Set details to continue", "error");
+        return;
+    }
+
+    //console.log("antes", id_P)
+
+    // Register purchase (with the date)
+    await query_IdP(dateFilter);
+
+    for (let purchase_dt of purchaseDetails) {
+        purchase_dt.idPurchase_fk = id_P;
+        //console.log(purchase_dt)
+    }
+    //console.log("list: ",purchaseDetails)
+
+    // Show confirmation dialog (doesn't work)
+    /*
+    if (!confirm("¿Are you sure you want to register these purchases?")) {
         return;
     }
     */
 
-    console.log("antes", id_P)
-    await query_IdP(dateFilter);
-    
-    
-    for (let purchase_dt of purchaseDetails) {
-        purchase_dt.idPurchase_fk=id_P;
-        console.log(purchase_dt)
-    }
-    
-/*
-    // Mostrar mensaje de confirmación
-    if (!confirm("¿Are you sure you want to register these purchases?")) {
-        return;
-    }
-
     try {
+        // Register details
         for (let purchase_dt of purchaseDetails) {
             await main.newpurchase(purchase_dt);
         }
-        console.log("Compras registrada exitosamente.");
 
-        // Limpiar la lista y la pantalla
+        // Update purchase
+        await main.updatePurchase(id_P);
+
+        // Message actions, clean and update list & recharge forms
+        showMessage("Purchases registered!", "success", `Inserted ${purchaseDetails.length} details successfully.`);
         purchaseDetails = [];
         update_DtPreview();
         btnPurchase.disabled = true;
-    } catch (error) {
-        console.error("Error al registrar compra:", error);
-        alert("Ocurrió un error al registrar la compra.");
-    }
+        dtRestart();
+
+        /*
+        // Show notificación
+        new Notification({
+            title: 'Purchase complete',
+            body: 'New details registrated xd'
+            }).show();
         */
+
+
+    } catch (error) {
+        //console.error("Error al registrar compra:", error);
+        //showMessage("Error: Date not founded :(", "error");
+    }
+
 });
+
+
+
+
+
+
+
+
+function showMessage(message, type = "success", subMessage = "") {
+    const msgBox = document.getElementById("msgBox");
+    const msgText = document.getElementById("msgText");
+    const msgSubtext = document.getElementById("msgSubtext");
+
+    // Set color (depends of bool variable)
+    msgBox.style.backgroundColor = type === "error" ? "#dc3545" : "#28a745";
+
+    // Set messages
+    msgText.textContent = message;
+    msgSubtext.textContent = subMessage; // Mensaje adicional
+
+    // Show messages
+    msgBox.style.display = "block";
+    msgBox.style.opacity = "1";
+
+    // 3sec for dissapear
+    setTimeout(() => {
+        msgBox.style.opacity = "0";
+        setTimeout(() => {
+            msgBox.style.display = "none";
+        }, 500);
+    }, 2500);
+}
+
+
+
+
+
+
 
 
 
@@ -235,7 +295,6 @@ function update_DtPreview() {
     });
 
 }
-
 
 function removeDetail(index) {
     purchaseDetails.splice(index, 1);

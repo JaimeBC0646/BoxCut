@@ -100,6 +100,10 @@
     width: 65%;
 }
 
+#btn_addPurchase{
+    margin: 1rem;
+}
+
 /* ---------------------------------------- */
 
 
@@ -121,6 +125,27 @@
     /*border: solid red;*/
 }
 
+
+
+
+
+
+
+
+#msgBox {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center in the middle of the view */
+    background-color: #ffff;
+    padding: 1rem 2rem;
+    border: solid;
+    border-radius: 8px;
+    display: none;
+    transition: opacity 0.5s ease-in-out; /* Efecto de desvanecimiento */
+    text-align: center; /* Asegura que el texto esté centrado */
+    font-weight: bold;
+}
 
 
 

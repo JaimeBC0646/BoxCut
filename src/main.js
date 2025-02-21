@@ -41,11 +41,10 @@ async function newDate(dtDate) {
 async function getIdByDate(dtDate) {
   const query = "SELECT idPurchase FROM tbl_purchases WHERE DATE(dtDate) = DATE(?);"
   const conn = await getConnection();
-  const results = await conn.query(query,[dtDate]);
+  const results = await conn.query(query, [dtDate]);
   //console.log(results)
   return results;
 }
-
 
 
 
@@ -71,50 +70,76 @@ async function getRelevances() {
 
 
 
-
-
-
 async function newpurchase(detailpurchase) {
   try {
     const conn = await getConnection();
-    
-    // Convertir valores a tipos correctos
+
+    // Transform values for each column
     detailpurchase.fltPrice = parseFloat(detailpurchase.fltPrice);
     detailpurchase.intQuantity = parseInt(detailpurchase.intQuantity);
+    detailpurchase.idPurchase_fk = parseInt(detailpurchase.idPurchase_fk);
+    detailpurchase.idBranchstore_fk = parseInt(detailpurchase.idBranchstore_fk);
+    detailpurchase.idRelevance_fk = parseInt(detailpurchase.idRelevance_fk);
 
-    // Llamar al procedimiento almacenado
+    // CALL SP
     const result = await conn.query(
-      'CALL SP_Insert_DtPurchase(?, ?, ?, ?, ?, ?, ?)', 
+      'CALL SP_Insert_DtPurchase(?, ?, ?, ?, ?, ?, ?)',
       [
-        detailpurchase.vchProduct, 
-        detailpurchase.vchDescription, 
-        detailpurchase.fltPrice, 
-        detailpurchase.intQuantity, 
-        detailpurchase.idPurchase_fk, 
-        detailpurchase.idBranchstore_fk, 
+        detailpurchase.vchProduct,
+        detailpurchase.vchDescription,
+        detailpurchase.fltPrice,
+        detailpurchase.intQuantity,
+        detailpurchase.idPurchase_fk,
+        detailpurchase.idBranchstore_fk,
         detailpurchase.idRelevance_fk
       ]
     );
 
-    // Mostrar notificación
+    /* // Mostrar notificación
     new Notification({
-      title: 'Compra completada',
-      body: 'Nuevo detalle de compra registrado'
+      title: 'Purchase complete',
+      body: 'New details registrated'
     }).show();
+    */
 
     return result; // Retorna el resultado de la inserción
-  } 
+  }
   catch (error) {
     console.error("Error al registrar la compra:", error);
     throw error; // Relanzar el error para manejarlo en otro lado si es necesario
   }
 }
 
+async function updatePurchase(id_P_fk) {
+  try {
+    const conn = await getConnection();
+
+    // CALL SP
+    const query = "CALL SP_UpdateTotalPurchase(?)"
+    const result = await conn.query(query, [id_P_fk]);
+
+    /* // Mostrar notificación
+    new Notification({
+      title: 'Purchase updated',
+      body: 'Total updated with details'
+    }).show();
+    */
+
+    return result; // Retorna el resultado de la inserción
+  }
+  catch (error) {
+    console.error("Error al registrar la compra:", error);
+    throw error; // Relanzar el error para manejarlo en otro lado si es necesario
+  }
+}
+
+//SP_UpdateTotalPurchase(?)
+
 async function getPurchases(option, year, month, day) {
   let query = "";
   /*let queryResponsable = "SELECT ";*/
   if (option === "general") {
-    query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDate, fltTotal FROM tbl_purchases ORDER BY STR_TO_DATE(dtDate, '%Y-%m-%d') DESC" 
+    query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDate, fltTotal FROM tbl_purchases ORDER BY STR_TO_DATE(dtDate, '%Y-%m-%d') DESC"
   }
   else if (option === "filter") {
     query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDate, fltTotal"
@@ -177,7 +202,8 @@ function createWindow() {
   })
 
   //win.loadFile('index.html')
-  win.loadFile('./src/index.html')
+  //win.loadFile('./src/index.html')
+  win.loadFile('./src/accessAdmin/purchases.html')
 
   //win.webContents.openDevTools();
 }
@@ -199,6 +225,7 @@ module.exports = {
   getRelevances,
 
   newpurchase,
+  updatePurchase,
   getPurchases,
   getDetailPurchases,
 
