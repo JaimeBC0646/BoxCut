@@ -1,3 +1,6 @@
+//import { showMessage } from "./msgModals.js";
+
+
 const newDtPurchaseDiv = document.getElementById('newDtPurchaseDiv');
 
 
@@ -88,7 +91,7 @@ datePurchase_filter.addEventListener('change', async (err) => {
     }
     // console.log(dateFilter)
 })
-/* Form: newDtPurchaseDiv  -|START|- */
+/* Form: newDtPurchaseDiv  -|END|- */
 
 
 function dtRestart() {
@@ -157,6 +160,8 @@ newDtPurchaseDiv.addEventListener('submit', async (err) => {
     }
     purchaseDetails.push(newDetailPurchase);
     //console.log("valor de branchstore: ", branchstore.value)
+    cantArticles = cantArticles + parseInt(quantity.value);
+    cantTotal = cantTotal + parseFloat(price.value * quantity.value);
     update_DtPreview();
     clearForm();
     //console.log("newDetailPurchase", newDetailPurchase);
@@ -166,12 +171,15 @@ newDtPurchaseDiv.addEventListener('submit', async (err) => {
 
 
 
+var cantArticles = 0;
+var cantTotal = 0;
 
 const newPurchaseDiv = document.getElementById('newPurchaseDiv');
 
 newPurchaseDiv.addEventListener('submit', async (event) => {
     event.preventDefault();
 
+    /*
     if (purchaseDetails.length === 0) {
         showMessage("No details in list. Set details to continue", "error");
         return;
@@ -188,13 +196,24 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
     }
     //console.log("list: ",purchaseDetails)
 
-    // Show confirmation dialog (doesn't work)
+    // (DOESN´T WORK) -- Show confirmation dialog 
     /*
     if (!confirm("¿Are you sure you want to register these purchases?")) {
         return;
     }
     */
 
+
+    confirmMessage("Are you sure you want to delete this item?", function (confirmed) {
+        if (confirmed) {
+            showMessage("Item successfully deleted!", "success");
+        } else {
+            showMessage("Action canceled!", "error");
+        }
+    });
+
+    
+/*
     try {
         // Register details
         for (let purchase_dt of purchaseDetails) {
@@ -208,6 +227,8 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
         showMessage("Purchases registered!", "success", `Inserted ${purchaseDetails.length} details successfully.`);
         purchaseDetails = [];
         update_DtPreview();
+        cantArticles = 0;
+        cantTotal = 0;
         btnPurchase.disabled = true;
         dtRestart();
 
@@ -219,11 +240,12 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
             }).show();
         */
 
-
+/*
     } catch (error) {
         //console.error("Error al registrar compra:", error);
         //showMessage("Error: Date not founded :(", "error");
     }
+    */
 
 });
 
@@ -234,30 +256,7 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
 
 
 
-function showMessage(message, type = "success", subMessage = "") {
-    const msgBox = document.getElementById("msgBox");
-    const msgText = document.getElementById("msgText");
-    const msgSubtext = document.getElementById("msgSubtext");
 
-    // Set color (depends of bool variable)
-    msgBox.style.backgroundColor = type === "error" ? "#dc3545" : "#28a745";
-
-    // Set messages
-    msgText.textContent = message;
-    msgSubtext.textContent = subMessage; // Mensaje adicional
-
-    // Show messages
-    msgBox.style.display = "block";
-    msgBox.style.opacity = "1";
-
-    // 3sec for dissapear
-    setTimeout(() => {
-        msgBox.style.opacity = "0";
-        setTimeout(() => {
-            msgBox.style.display = "none";
-        }, 500);
-    }, 2500);
-}
 
 
 
@@ -275,8 +274,20 @@ function showMessage(message, type = "success", subMessage = "") {
 let purchaseDetails = []; // Save details purchase temporaly
 const cardDtList = document.querySelector('.card_dtList'); // Div view for the details
 
+
 function update_DtPreview() {
-    cardDtList.innerHTML = ''; // Clean list before update
+    const p_Articles = document.getElementById('lblArticle');
+    const p_Total = document.getElementById('lblTotal');
+
+
+    // Clean list before update
+    cardDtList.innerHTML = '';
+    p_Articles.innerHTML = '';
+    p_Total.innerHTML = '';
+
+
+    p_Articles.innerHTML = ` ${cantArticles}`;
+    p_Total.innerHTML = `$${cantTotal}.00`;
 
     purchaseDetails.forEach((detail, index) => {
         let card = document.createElement('div');
@@ -296,8 +307,15 @@ function update_DtPreview() {
 
 }
 
+var dtP_Deleted;
 function removeDetail(index) {
+    //console.log("index: ", index);
+    dtP_Deleted =purchaseDetails[index];
+    //console.log("Del position: ", dtP_Deleted)
     purchaseDetails.splice(index, 1);
+
+    cantArticles = cantArticles - parseInt(dtP_Deleted.intQuantity);
+    cantTotal = cantTotal - parseFloat(dtP_Deleted.fltPrice * dtP_Deleted.intQuantity);
     update_DtPreview();
 }
 
@@ -309,5 +327,6 @@ function clearForm() {
     branchstore.selectedIndex = 0;
     relevance.selectedIndex = 0;
 }
+
 
 chargeForm();

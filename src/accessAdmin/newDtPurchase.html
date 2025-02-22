@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../styles/bg.css">
     <link rel="stylesheet" type="text/css" href="../styles/newDtPurchase.css">
+    <link rel="stylesheet" type="text/css" href="../styles/msgModals.css">
 
     <title>boxCut</title>
 </head>
@@ -31,7 +32,13 @@
                 <div class="card_dtList"></div>
             </div>
 
-            <button id="btn_addPurchase" disabled="true">ADD PURCHASE</button>
+            <div class="subDetails">
+                <div>
+                    <i><strong>Articles:</strong><p id="lblArticle">0</p></i>
+                    <i><strong>Total:</strong><p id="lblTotal">$0.00</p></i>
+                </div>
+                <button id="btn_addPurchase" disabled="true">ADD PURCHASE</button>
+            </div>            
         </form>
 
 
@@ -75,8 +82,17 @@
         </form>
     </div>
     
+    <div id="confirmBox" class="confirm-container hide">
+        <div class="confirm-content">
+            <strong><p id="confirmText"></p></strong>
+            <div class="confirm-buttons">
+                <button id="confirmYes"><b>Yes</b></button>
+                <button id="confirmNo"><b>Cancel</b></button>
+            </div>
+        </div>
+    </div>
     
-    <div id="msgBox" class="hide">
+    <div id="msgBox">
         <p id="msgText"></p>
         <p id="msgSubtext" style="font-size: 14px; opacity: 0.8;"></p>
     </div>
@@ -84,6 +100,7 @@
 
 
     <script src="../sqlMoves/add_dtPurchase.js"></script>
+    <script src="../sqlMoves/msgModals.js"></script>
 
 </body>
 

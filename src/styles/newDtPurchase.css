@@ -77,7 +77,6 @@
     overflow-y: auto;
     /* Vertical scrollbar*/
     border: 3px solid;
-
 }
 
 .card_dtList {
@@ -99,6 +98,34 @@
     /*border: solid red;*/
     width: 65%;
 }
+
+.subDetails{
+    width: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    /*border: solid rgb(228, 199, 162);*/
+}
+.subDetails div {
+    display: flex;
+    justify-content: space-between;
+}
+.subDetails div i{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(228, 199, 162);
+    border: solid 3px black;
+    border-radius: 10px;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8em;
+    margin: 0.5rem;
+}
+
+
+
 
 #btn_addPurchase{
     margin: 1rem;
@@ -132,20 +159,7 @@
 
 
 
-#msgBox {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Center in the middle of the view */
-    background-color: #ffff;
-    padding: 1rem 2rem;
-    border: solid;
-    border-radius: 8px;
-    display: none;
-    transition: opacity 0.5s ease-in-out; /* Efecto de desvanecimiento */
-    text-align: center; /* Asegura que el texto esté centrado */
-    font-weight: bold;
-}
+
 
 
 
