@@ -1,6 +1,7 @@
 const { remote } = require('electron');
 const main = remote.require('./main.js');
 
+// Calar para acceder
 
 const txtIdentity = document.getElementById('txtIdentity');
 const txtPassword = document.getElementById('txtPassword');
