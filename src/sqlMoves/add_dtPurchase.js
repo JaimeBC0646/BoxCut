@@ -179,7 +179,7 @@ const newPurchaseDiv = document.getElementById('newPurchaseDiv');
 newPurchaseDiv.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    /*
+    
     if (purchaseDetails.length === 0) {
         showMessage("No details in list. Set details to continue", "error");
         return;
@@ -203,17 +203,18 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
     }
     */
 
-
-    confirmMessage("Are you sure you want to delete this item?", function (confirmed) {
+    /*
+    confirmMessage("Are you sure you want to confirm this purchase?", function (confirmed) {
         if (confirmed) {
-            showMessage("Item successfully deleted!", "success");
+            showMessage("Purchase complete!", "success");
         } else {
             showMessage("Action canceled!", "error");
+            return;
         }
     });
-
+    */
     
-/*
+
     try {
         // Register details
         for (let purchase_dt of purchaseDetails) {
@@ -240,12 +241,12 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
             }).show();
         */
 
-/*
+
     } catch (error) {
         //console.error("Error al registrar compra:", error);
         //showMessage("Error: Date not founded :(", "error");
     }
-    */
+    
 
 });
 
