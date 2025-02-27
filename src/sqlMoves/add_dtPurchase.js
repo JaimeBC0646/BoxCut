@@ -3,7 +3,6 @@
 
 const newDtPurchaseDiv = document.getElementById('newDtPurchaseDiv');
 
-
 const { remote } = require('electron');
 const { escape } = require('promise-mysql');
 const { Notification } = require('electron')
@@ -185,7 +184,7 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
         return;
     }
 
-    //console.log("antes", id_P)
+    //console.log("antes", id_P);
 
     // Register purchase (with the date)
     await query_IdP(dateFilter);
