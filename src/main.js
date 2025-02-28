@@ -139,7 +139,7 @@ async function getPurchases(option, year, month, day) {
   let query = "";
   /*let queryResponsable = "SELECT ";*/
   if (option === "general") {
-    query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDate, fltTotal FROM tbl_purchases ORDER BY STR_TO_DATE(dtDate, '%Y-%m-%d') DESC"
+    query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltTotal FROM tbl_purchases ORDER BY dtDate DESC"
   }
   else if (option === "filter") {
     query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDate, fltTotal"
@@ -178,12 +178,12 @@ async function editProduct(id) {
   //return results;
 }
 
-async function deleteProduct(id) {
-  console.log(id);
-  /*
+async function deleteDetailPurchases(id) {
+  //console.log(id);
+  
   const conn = await getConnection();
-  const results = await conn.query("DELETE * FROM tblProductos WHERE idProducto = "+id)
-  */
+  const results = await conn.query("DELETE FROM tbl_dt_purchases WHERE id_dtPurchase = "+id);
+  
   //console.log(results)
 }
 
@@ -228,6 +228,7 @@ module.exports = {
   updatePurchase,
   getPurchases,
   getDetailPurchases,
+  deleteDetailPurchases,
 
   /*
   newInvestment,

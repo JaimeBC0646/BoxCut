@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../styles/bg.css">
     <link rel="stylesheet" type="text/css" href="../styles/purchase.css">
+    <link rel="stylesheet" type="text/css" href="../styles/msgModals.css">
     <title>BoxCut_v1 (admin)</title>
 </head>
 
@@ -30,7 +31,6 @@
         </ul>
     </nav>
 
-
     <div class="titleMod">
         <label>PURCHASES</label>
     </div>
@@ -52,13 +52,16 @@
 
     <!-- TABLES: PURCHASE & DT -->
     <div class="purchasesDiv">
+
+        <!-- PURCHASE -->
         <div class="purchaseRow">
             <div class="scroll-table">
                 <div id="purchase"></div>
             </div>
-            <a href="./newDtPurchase.html" ><Button class="btnNewDtP"> NEW PURCASE</Button></a>
+            <a href="./newDtPurchase.html"><Button class="btnNewDtP"> NEW PURCASE</Button></a>
         </div>
 
+        <!-- DT -->
         <div class="dt_purchaseRow">
             <div class="scroll-table">
                 <div id="dtPurchase"></div>
@@ -77,22 +80,29 @@
         -->
     </div>
 
-    
 
-    <!--
-    <div class="purchasesDiv2">
-        <div class="purchaseRow">
-            <div class="scroll-table">
-                <div id="dtPurchase"></div>
+
+    <!-- MESSAGE BOXES -->
+    <div id="confirmBox" class="confirm-container hide">
+        <div class="confirm-content">
+            <strong><p id="confirmText"></p></strong>
+            <div class="confirm-buttons">
+                <button id="confirmYes"><b>Yes</b></button>
+                <button id="confirmNo"><b>Cancel</b></button>
             </div>
         </div>
     </div>
-    -->
+    
+    <div id="msgBox">
+        <p id="msgText"></p>
+        <p id="msgSubtext" style="font-size: 14px; opacity: 0.8;"></p>
+    </div>
 
 
 
     <script src="../sqlMoves/query-Purchases.js"></script>
     <script src="../sqlMoves/add_dtPurchase.js"></script>
+    <script src="../sqlMoves/msgModals.js"></script>
 
 </body>
 

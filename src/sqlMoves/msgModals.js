@@ -14,7 +14,7 @@ function showMessage(message, type = "success", subMessage = "") {
     msgBox.style.display = "block";
     msgBox.style.opacity = "1";
 
-    // 3sec for dissapear
+    // 2.5sec for dissapear
     setTimeout(() => {
         msgBox.style.opacity = "0";
         setTimeout(() => {
@@ -26,32 +26,30 @@ function showMessage(message, type = "success", subMessage = "") {
 
 
 
+function confirmMessage(message) {
+    return new Promise((resolve) => {
+        const confirmBox = document.getElementById("confirmBox");
+        const confirmText = document.getElementById("confirmText");
+        const confirmYes = document.getElementById("confirmYes");
+        const confirmNo = document.getElementById("confirmNo");
 
-function confirmMessage(message, callback) {
-    const confirmBox = document.getElementById("confirmBox");
-    const confirmText = document.getElementById("confirmText");
-    const confirmYes = document.getElementById("confirmYes");
-    const confirmNo = document.getElementById("confirmNo");
+        confirmText.textContent = message;
+        
+        // Mostrar correctamente el modal
+        confirmBox.classList.remove("hide");
+        confirmBox.classList.add("show");
 
-    confirmText.textContent = message;
-    
-    // Mostrar correctamente el modal (reseteamos cualquier estilo previo)
-    confirmBox.classList.remove("hide");
-    confirmBox.classList.add("show");
+        // Función para cerrar el modal con animación
+        function closeConfirm(result) {
+            confirmBox.classList.remove("show");
+            confirmBox.classList.add("hide");
 
-    // Función para cerrar el modal con animación
-    function closeConfirm(result) {
-        confirmBox.classList.remove("show");
-        confirmBox.classList.add("hide");
+            setTimeout(() => resolve(result), 300); // Resuelve la Promesa con el resultado
+        }
 
-        setTimeout(() => {
-            callback(result);
-        }, 300); // Espera que termine la animación antes de ejecutar la función
-    }
-
-    // Botón "Yes"
-    confirmYes.onclick = () => closeConfirm(true);
-
-    // Botón "Cancel"
-    confirmNo.onclick = () => closeConfirm(false);
+        // Asignar eventos
+        confirmYes.onclick = () => closeConfirm(true);
+        confirmNo.onclick = () => closeConfirm(false);
+    });
 }
+

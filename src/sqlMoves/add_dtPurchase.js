@@ -178,7 +178,7 @@ const newPurchaseDiv = document.getElementById('newPurchaseDiv');
 newPurchaseDiv.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    
+
     if (purchaseDetails.length === 0) {
         showMessage("No details in list. Set details to continue", "error");
         return;
@@ -186,6 +186,14 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
 
     //console.log("antes", id_P);
 
+
+    const confirmed = await confirmMessage("Are you sure you want to confirm this purchase?");
+    if (!confirmed) {
+        showMessage("Action canceled!", "error");
+        return;
+    }
+
+    
     // Register purchase (with the date)
     await query_IdP(dateFilter);
 
@@ -193,27 +201,9 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
         purchase_dt.idPurchase_fk = id_P;
         //console.log(purchase_dt)
     }
-    //console.log("list: ",purchaseDetails)
+    //console.log("list: ",purchaseDetails)   
 
-    // (DOESN´T WORK) -- Show confirmation dialog 
-    /*
-    if (!confirm("¿Are you sure you want to register these purchases?")) {
-        return;
-    }
-    */
-
-    /*
-    confirmMessage("Are you sure you want to confirm this purchase?", function (confirmed) {
-        if (confirmed) {
-            showMessage("Purchase complete!", "success");
-        } else {
-            showMessage("Action canceled!", "error");
-            return;
-        }
-    });
-    */
     
-
     try {
         // Register details
         for (let purchase_dt of purchaseDetails) {
@@ -226,26 +216,17 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
         // Message actions, clean and update list & recharge forms
         showMessage("Purchases registered!", "success", `Inserted ${purchaseDetails.length} details successfully.`);
         purchaseDetails = [];
-        update_DtPreview();
         cantArticles = 0;
         cantTotal = 0;
+        update_DtPreview();
         btnPurchase.disabled = true;
         dtRestart();
-
-        /*
-        // Show notificación
-        new Notification({
-            title: 'Purchase complete',
-            body: 'New details registrated xd'
-            }).show();
-        */
 
 
     } catch (error) {
         //console.error("Error al registrar compra:", error);
         //showMessage("Error: Date not founded :(", "error");
     }
-    
 
 });
 
@@ -310,7 +291,7 @@ function update_DtPreview() {
 var dtP_Deleted;
 function removeDetail(index) {
     //console.log("index: ", index);
-    dtP_Deleted =purchaseDetails[index];
+    dtP_Deleted = purchaseDetails[index];
     //console.log("Del position: ", dtP_Deleted)
     purchaseDetails.splice(index, 1);
 
