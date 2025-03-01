@@ -23,7 +23,10 @@
 }
 
 
-
+#purchase{
+    height: 22rem;
+    max-height: 22rem;
+}
 
 .purchasesDiv {
     display: flex;
@@ -48,6 +51,7 @@
     text-align: center;
     letter-spacing: 3px;
 }
+
 
 
 
@@ -91,15 +95,17 @@
 }
 
 
-.tdAction{
+
+
+.btnActions{
     display: flex;
     flex-direction: row;
 }
-.tdAction img{
+.btnActions img{
     width: 2.5rem;
     padding: 5px;
 }
-.tdAction img:hover{
+.btnActions img:hover{
     cursor: pointer;
     width: 3rem;
 }
@@ -159,33 +165,6 @@
 
 
 
-table {
-    background-color: #f2f2f2;
-    border-collapse: collapse;
-    width: 100%;
-    font-size: 1rem;
-}
-
-th,
-td {
-    align-items: center;
-    padding: 10px;
-    font-size: 15px;
-    /*border: solid 0.5px;*/
-}
-
-tr {
-
-    border: solid 3px;
-}
-
-tbody tr:hover {
-    background-color: #f8a558;
-}
-
-
-
-
 .btnNewDtP {
     margin: 1rem;
     padding: 0.5rem;
@@ -202,3 +181,5 @@ tbody tr:hover {
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
+
+

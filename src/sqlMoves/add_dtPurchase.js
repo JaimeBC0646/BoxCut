@@ -44,8 +44,8 @@ const charge_branchstores = async () => {
 
 
 /* Charge data: Relevance  -|START|- */
+let revelances = [];
 const charge_revelances = async () => {
-    let revelances = [];
     revelances = await main.getRelevances();
     //console.log(revelances)
 
@@ -193,7 +193,7 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
         return;
     }
 
-    
+
     // Register purchase (with the date)
     await query_IdP(dateFilter);
 
@@ -203,7 +203,7 @@ newPurchaseDiv.addEventListener('submit', async (event) => {
     }
     //console.log("list: ",purchaseDetails)   
 
-    
+
     try {
         // Register details
         for (let purchase_dt of purchaseDetails) {
@@ -274,10 +274,16 @@ function update_DtPreview() {
         let card = document.createElement('div');
         card.classList.add('purchaseCard');
         card.innerHTML = `
-            <div class="infoDt">
-                 <p><strong>Branchstore: </strong> ${branchstores[detail.idBranchstore_fk - 1].vchName}</p>
-                <p><strong>Product: </strong> ${detail.vchProduct}</p>
-                <i><strong>$${detail.fltPrice} * ${detail.intQuantity} = $${detail.fltPrice * detail.intQuantity}.00</strong></i>
+            <div class="rowInfo">
+                <div class="infoDt">
+                    <p><strong>Branchstore: </strong> ${branchstores[detail.idBranchstore_fk - 1].vchAbbreviation}</p>
+                    <p><strong>Product: </strong> ${detail.vchProduct}</p>
+                    <p><i><strong>$${detail.fltPrice} * ${detail.intQuantity} = $${detail.fltPrice * detail.intQuantity}.00</strong></i></p>
+                </div>
+                <div class="infoDt">
+                    <p><strong>Description: </strong>${detail.vchDescription}</p>
+                    <p><strong>Relevance: </strong>${revelances[detail.idRelevance_fk - 1].vchDescription}</p>
+                </div>
             </div>
             <button onclick="removeDetail(${index})">Delete</button>
         `;

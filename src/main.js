@@ -4,7 +4,7 @@ const path = require('path')
 
 /* Begin CRUDS boxCut */
 
-//LOGIN
+/* -----| LOGIN |-----*/
 
 async function loginQuery(identity, password) {
 
@@ -18,7 +18,7 @@ async function loginQuery(identity, password) {
 }
 
 
-// PURCHASES
+/* -----| PURCHASES |-----*/
 async function newDate(dtDate) {
   try {
     const conn = await getConnection();
@@ -142,7 +142,7 @@ async function getPurchases(option, year, month, day) {
     query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltTotal FROM tbl_purchases ORDER BY dtDate DESC"
   }
   else if (option === "filter") {
-    query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDate, fltTotal"
+    query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltTotal"
       + " FROM tbl_purchases"
       + " WHERE YEAR(dtDate) = " + year
       + " AND MONTH(dtDate) = " + month
@@ -156,8 +156,21 @@ async function getPurchases(option, year, month, day) {
   return results;
 }
 
+
+
+async function getDtPurchase(idpurchase) {
+  let query = "SELECT * FROM tbl_dt_purchases WHERE id_dtPurchase =" + idpurchase + ";";
+
+  const conn = await getConnection();
+  const results = await conn.query(query)
+  //console.log(results)
+  return results;
+}
+
+
+
 async function getDetailPurchases(idpurchase) {
-  let query = "SELECT * FROM vw_purchaseDetail WHERE idP_fk =" + idpurchase + ";";
+  let query = "SELECT * FROM vw_purchaseDetail WHERE idP_fk =" + idpurchase + " ORDER BY id_dtP;";
 
   const conn = await getConnection();
   const results = await conn.query(query)
@@ -227,6 +240,8 @@ module.exports = {
   newpurchase,
   updatePurchase,
   getPurchases,
+
+  getDtPurchase,
   getDetailPurchases,
   deleteDetailPurchases,
 

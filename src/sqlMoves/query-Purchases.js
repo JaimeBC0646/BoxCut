@@ -48,16 +48,30 @@ function renderPurchases(purchases) {
         </tr>
     </thead>
     <tbody>`;
-    purchases.forEach((purchase) => {
-        tableHTML += `
-        <tr>
-            <td>${purchase.dtDateFormated}</td>
-            <td align="right">$${purchase.fltTotal}.00</td>
-            <td align="center"><button id="btnView_dtPurchase" class="btnView_dtPurchase" data-idPurchase="${purchase.idPurchase}">Detail</button></td>
-        </tr>
-        `;
-    });
-    purchasesList.innerHTML += tableHTML += `</tbody></table>`;
+
+    if (purchases.length == 0) {
+        purchasesList.innerHTML += tableHTML +=
+            `<tbody>
+                <tr>
+                    <td align="center" colspan="3"> <h3><< NO DATA TO SHOW >></h3> </td>
+                </tr>
+            </tbody></table>`;
+    }
+    else {
+        purchases.forEach((purchase) => {
+            tableHTML += `
+            <tr>
+                <td>${purchase.dtDateFormated}</td>
+                <td align="right">$${purchase.fltTotal}.00</td>
+                <td align="center"><button id="btnView_dtPurchase" class="btnView_dtPurchase" data-idPurchase="${purchase.idPurchase}">Detail</button></td>
+            </tr>
+            `;
+        });
+        purchasesList.innerHTML += tableHTML += `</tbody></table>`;
+    }
+
+
+
 }
 
 const getPurchases = async () => {
@@ -124,13 +138,11 @@ function renderdtPurchases(dtPurchases) {
         </tr>
     </thead>`;
 
-    if (dtPurchases === "") {
+    if (dtPurchases.length == 0) {
         dtPurchasesList.innerHTML += tableHTML +=
             `<tbody>
                 <tr>
-                    <td>CONTENIDOS</td>
-                    <td>CONTENIDOS</td>
-                    <td>CONTENIDOS</td>
+                    <td align="center" colspan="8"> <h2><< Select any purchase to detail >></h2> </td>
                 </tr>
             </tbody></table>`;
     }
@@ -142,13 +154,16 @@ function renderdtPurchases(dtPurchases) {
                 <td>${dtPurchase.Description}</td>
                 <td align="right">$${dtPurchase.Price}.00</td>
                 <td align="center">${dtPurchase.Quantity}</td>
-
+                
                 <td align="right">$${dtPurchase.Subtotal}.00</td>
                 <td align="center">${dtPurchase.Branchstore_Name}</td>
                 <td>${dtPurchase.Relevance}</td>
-                <td class="tdAction">
-                    <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_dtPurchase"  data-idEdit_DT="${dtPurchase.id_dtP}" data-idP_ref="${dtPurchase.idP_fk}">
-                    <img src ="../imgResources/deleteIcon.png" id="btnActionP" class="btnDelete_dtPurchase"  data-idDelete_DT="${dtPurchase.id_dtP}" data-idP_ref="${dtPurchase.idP_fk}">
+                <td>
+                    <div class="btnActions">
+                        <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_dtPurchase"  data-idEdit_DT="${dtPurchase.id_dtP}" data-idP_ref="${dtPurchase.idP_fk}">
+                        <img src ="../imgResources/deleteIcon.png" id="btnActionP" class="btnDelete_dtPurchase"  data-idDelete_DT="${dtPurchase.id_dtP}" data-idP_ref="${dtPurchase.idP_fk}">
+                    </div>
+                    
                 </td>
             </tr>
             `;
@@ -156,6 +171,7 @@ function renderdtPurchases(dtPurchases) {
         dtPurchasesList.innerHTML += tableHTML += `</tbody></table>`;
     }
 }
+
 
 document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('btnView_dtPurchase')) {
@@ -167,7 +183,7 @@ document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('btnEdit_dtPurchase')) {
         const id_P_ref = event.target.getAttribute('data-idP_ref');
         const idEdit_DT = event.target.getAttribute('data-idEdit_DT');   //console.log("Editado: ", idEdit_DT);
-
+        showDt_EditForm(idEdit_DT, id_P_ref);
     }
 
 
@@ -180,7 +196,7 @@ document.addEventListener('click', async (event) => {
             showMessage("Action canceled!", "error");
             return;
         }
-        
+
         deleteDetail(idDelete_DT);   //console.log("Eliminado: ", idDelete_DT);
         init();
         init2(id_P_ref);
@@ -191,6 +207,75 @@ const getDetailpurchases = async (idPurchase) => {
     /*console.log(idVenta);*/
     dtPurchases = await main.getDetailPurchases(idPurchase);
     renderdtPurchases(dtPurchases);
+
+}
+
+const showDt_EditForm = async (id_dtP_del) => {
+    // 1. Crear el modal en el HTML
+    const modalHTML = `
+    <div id="editModal" class="modal hide">
+        <div class="modal-content">
+            <h2>Edit Purchase Detail</h2>
+            <label>Product/Service:</label>
+            <input type="text" id="editPoS">
+            <label>Description:</label>
+            <input type="text" id="editDescription">
+            <label>Price:</label>
+            <input type="number" id="editPrice">
+            <label>Quantity:</label>
+            <input type="number" id="editQuantity">
+            <button id="saveEdit">Save</button>
+            <button id="cancelEdit">Cancel</button>
+        </div>
+    </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    const modal = document.getElementById('editModal');
+    const editPoS = document.getElementById('editPoS');
+    const editDescription = document.getElementById('editDescription');
+    const editPrice = document.getElementById('editPrice');
+    const editQuantity = document.getElementById('editQuantity');
+    const saveEdit = document.getElementById('saveEdit');
+    const cancelEdit = document.getElementById('cancelEdit');
+    let currentEditId = null;
+
+    // 2. Capturar el click en el botón de edición
+    document.addEventListener('click', async (event) => {
+        if (event.target.classList.contains('btnEdit_dtPurchase')) {
+            idEdit = event.target.getAttribute('data-idEdit_DT');
+            console.log("id edit: ", idEdit)
+            // Obtener los datos actuales del registro
+            const row = event.target.closest('tr');
+            editPoS.value = row.children[0].textContent;
+            editDescription.value = row.children[1].textContent;
+            editPrice.value = row.children[2].textContent.replace('$', '').trim();
+            editQuantity.value = row.children[3].textContent;
+
+            // Mostrar el modal
+            modal.classList.remove('hide');
+        }
+    });
+
+    // 3. Guardar los cambios
+    saveEdit.addEventListener('click', async () => {
+        const updatedData = {
+            id: currentEditId,
+            PoS: editPoS.value,
+            Description: editDescription.value,
+            Price: parseFloat(editPrice.value),
+            Quantity: parseInt(editQuantity.value)
+        };
+
+        await main.updateDetailPurchase(updatedData);
+        modal.classList.add('hide');
+        init(); // Recargar la tabla
+    });
+
+    // 4. Cancelar edición
+    cancelEdit.addEventListener('click', () => {
+        modal.classList.add('hide');
+    });
 
 }
 
@@ -210,3 +295,7 @@ async function init2(idVenta) {
 
 /*  -----| CHARGE VIEW |-----   */
 init();
+
+
+
+

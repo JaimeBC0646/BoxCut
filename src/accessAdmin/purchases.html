@@ -11,10 +11,12 @@
 </head>
 
 <body>
+
+    <!-- NAVBAR -->
     <nav class="navbarMain">
         <ul class="ul-container">
             <div class="sesionDiv">
-                <h1 id="userSesion">Session: <br></h1>
+                <h1 id="userSesion">PURCHASES <br></h1>
             </div>
 
             <div>
@@ -31,10 +33,12 @@
         </ul>
     </nav>
 
+    <!--
     <div class="titleMod">
-        <label>PURCHASES</label>
+        <h2>PURCHASES</h2>
     </div>
-
+    -->
+    
     <div class="rdbDiv">
         <div class="rdbOption">
             <input type="radio" id="rdbGeneral" name="rdbQuery" value="general" checked>
@@ -67,17 +71,6 @@
                 <div id="dtPurchase"></div>
             </div>
         </div>
-        <!--
-        <div class="purchaseRow">
-            <select id="periodSelector">
-                <option value="">[Seleccionar periodo]</option>
-                <option value="diario">Diario</option>
-                <option value="mensual">Mensual</option>
-                <option value="semanal">Semanal</option>
-            </select>
-            <button id="btnGenerateReport">GENERAR REPORTE</button>
-        </div>
-        -->
     </div>
 
 
@@ -85,18 +78,69 @@
     <!-- MESSAGE BOXES -->
     <div id="confirmBox" class="confirm-container hide">
         <div class="confirm-content">
-            <strong><p id="confirmText"></p></strong>
+            <strong>
+                <p id="confirmText"></p>
+            </strong>
             <div class="confirm-buttons">
                 <button id="confirmYes"><b>Yes</b></button>
                 <button id="confirmNo"><b>Cancel</b></button>
             </div>
         </div>
     </div>
-    
+
     <div id="msgBox">
         <p id="msgText"></p>
         <p id="msgSubtext" style="font-size: 14px; opacity: 0.8;"></p>
     </div>
+
+
+
+
+
+    <div id="editModal" class="modal hide">
+        <div class="modal-content">
+            <h2>Edit Purchase Detail</h2>
+            <div class="purchaseInput">
+                <label for="product">Product:</label>
+                <input type="text" id="txt_product" name="product">
+            </div>
+
+            <div class="purchaseInput">
+                <label for="description">Description:</label>
+                <textarea id="txt_description" name="description"></textarea>
+            </div>
+
+            <div class="purchaseInput">
+                <label for="price">Price:</label>
+                <input type="text" id="txt_price" name="price">
+            </div>
+
+            <div class="purchaseInput">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="txt_quantity" name="quantity">
+            </div>
+
+            <div class="purchaseInput">
+                <label for="store">Store / Place:</label>
+                <select id="txt_store" name="txt_store">
+                    <option>Select branchstore</option>
+                </select>
+            </div>
+
+            <div class="purchaseInput">
+                <label for="relevance">Relevance:</label>
+                <select id="txt_relevance" name="txt_relevance">
+                    <option>Select relevance</option>
+                </select>
+            </div>
+
+
+
+            <button id="saveDt">Save</button>
+            <button id="cancelEdit">Cancel</button>
+        </div>
+    </div>
+
 
 
 

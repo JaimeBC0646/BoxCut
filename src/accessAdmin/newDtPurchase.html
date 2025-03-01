@@ -29,16 +29,23 @@
             </div>
 
             <div class="scroll-table">
-                <div class="card_dtList"></div>
+                <div class="card_dtList">
+
+
+                </div>
             </div>
 
             <div class="subDetails">
                 <div>
-                    <i><strong>Articles:</strong><p id="lblArticle">0</p></i>
-                    <i><strong>Total:</strong><p id="lblTotal">$0.00</p></i>
+                    <i><strong>Articles:</strong>
+                        <p id="lblArticle">0</p>
+                    </i>
+                    <i><strong>Total:</strong>
+                        <p id="lblTotal">$0.00</p>
+                    </i>
                 </div>
                 <button id="btn_addPurchase" disabled="true">ADD PURCHASE</button>
-            </div>            
+            </div>
         </form>
 
 
@@ -81,25 +88,27 @@
             <button>ADD DETAIL</button>
         </form>
     </div>
-    
+
 
 
     <!-- MESSAGE BOXES -->
     <div id="confirmBox" class="confirm-container hide">
         <div class="confirm-content">
-            <strong><p id="confirmText"></p></strong>
+            <strong>
+                <p id="confirmText"></p>
+            </strong>
             <div class="confirm-buttons">
                 <button id="confirmYes"><b>Yes</b></button>
                 <button id="confirmNo"><b>Cancel</b></button>
             </div>
         </div>
     </div>
-    
+
     <div id="msgBox">
         <p id="msgText"></p>
         <p id="msgSubtext" style="font-size: 14px; opacity: 0.8;"></p>
     </div>
-    
+
 
 
     <script src="../sqlMoves/add_dtPurchase.js"></script>
