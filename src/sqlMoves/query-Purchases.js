@@ -2,6 +2,75 @@ const { remote } = require('electron');
 const main = remote.require('./main.js');
 
 
+/* CHARGING FORM */
+function charge_editForm(id) {
+    chargeDate(id)
+    charge_branchstores();
+    charge_revelances();
+}
+
+let inDate ="";
+const chargeDate = async (id_date) => {
+    var res = await main.getDateById(id_date);
+    //inDate = res[0];
+    console.log("fecha: ",res)
+}
+
+
+/* Charge data: Branchstore  -|START|- */
+let branchstores = [];
+const charge_branchstores = async () => {
+    branchstores = await main.getBranchstores();
+    //console.log(branchstores)
+
+    if (branchstores) {
+        branchstores.sort();   // Order A-Z
+        addOptions("txt_store", branchstores);
+    }
+
+    // Add options into <select>
+    function addOptions(domElement, branchstores) {
+        var select = document.getElementsByName(domElement)[0];
+        //console.log(branchstores[0].vchName);
+
+        for (value in branchstores) {
+            var option = document.createElement("option");
+            option.value = branchstores[value].idBranchstore;
+            option.text = branchstores[value].vchName;
+            select.add(option);
+        }
+    }
+}
+/* Charge data: Branchstore  -|END|- */
+
+
+/* Charge data: Relevance  -|START|- */
+let revelances = [];
+const charge_revelances = async () => {
+    revelances = await main.getRelevances();
+    //console.log(revelances)
+
+    if (revelances) {
+        revelances.sort();   // Order A-Z
+        addOptions("txt_relevance", revelances);
+    }
+
+    // Add options into <select>
+    function addOptions(domElement, revelances) {
+        var select = document.getElementsByName(domElement)[0];
+        //console.log(revelances[0].vchName);
+
+        for (value in revelances) {
+            var option = document.createElement("option");
+            option.value = revelances[value].idRelevance;
+            option.text = revelances[value].vchDescription;
+            select.add(option);
+        }
+    }
+}
+/* Charge data: Relevance  -|END|- */
+
+
 /*RDB selection   START*/
 const rdbGeneral = document.getElementById('rdbGeneral');
 const rdbFilter = document.getElementById('rdbFilter');
@@ -61,8 +130,8 @@ function renderPurchases(purchases) {
         purchases.forEach((purchase) => {
             tableHTML += `
             <tr>
-                <td>${purchase.dtDateFormated}</td>
-                <td align="right">$${purchase.fltTotal}.00</td>
+                <td><b>${purchase.dtDateFormated}</b></td>
+                <td align="right"><b>$${purchase.fltTotal}.00</b></td>
                 <td align="center"><button id="btnView_dtPurchase" class="btnView_dtPurchase" data-idPurchase="${purchase.idPurchase}">Detail</button></td>
             </tr>
             `;
@@ -160,8 +229,8 @@ function renderdtPurchases(dtPurchases) {
                 <td>${dtPurchase.Relevance}</td>
                 <td>
                     <div class="btnActions">
-                        <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_dtPurchase"  data-idEdit_DT="${dtPurchase.id_dtP}" data-idP_ref="${dtPurchase.idP_fk}">
-                        <img src ="../imgResources/deleteIcon.png" id="btnActionP" class="btnDelete_dtPurchase"  data-idDelete_DT="${dtPurchase.id_dtP}" data-idP_ref="${dtPurchase.idP_fk}">
+                        <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_dtPurchase"  data-idEdit_DT="${dtPurchase.id_dtP}" >
+                        <img src ="../imgResources/deleteIcon.png" id="btnActionP" class="btnDelete_dtPurchase"  data-idDelete_DT="${dtPurchase.id_dtP}" >
                     </div>
                     
                 </td>
@@ -181,9 +250,9 @@ document.addEventListener('click', async (event) => {
 
 
     if (event.target.classList.contains('btnEdit_dtPurchase')) {
-        const id_P_ref = event.target.getAttribute('data-idP_ref');
         const idEdit_DT = event.target.getAttribute('data-idEdit_DT');   //console.log("Editado: ", idEdit_DT);
-        showDt_EditForm(idEdit_DT, id_P_ref);
+        //console.log("Id click: ", idEdit_DT)
+        showDt_EditForm(idEdit_DT);
     }
 
 
@@ -210,74 +279,123 @@ const getDetailpurchases = async (idPurchase) => {
 
 }
 
-const showDt_EditForm = async (id_dtP_del) => {
+
+const showDt_EditForm = async (id_dtP_edit) => {
+
+    const existingModal = document.getElementById('frm_editModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+
+    const row_infoDtP = await main.getDetailById(id_dtP_edit);
+
+    //console.log(row_infoDtP[0]);
+
+
     // 1. Crear el modal en el HTML
-    const modalHTML = `
-    <div id="editModal" class="modal hide">
-        <div class="modal-content">
+    modalHTML = `
+    <div id="frm_editModal">
+        <div class="edit_form">
             <h2>Edit Purchase Detail</h2>
-            <label>Product/Service:</label>
-            <input type="text" id="editPoS">
-            <label>Description:</label>
-            <input type="text" id="editDescription">
-            <label>Price:</label>
-            <input type="number" id="editPrice">
-            <label>Quantity:</label>
-            <input type="number" id="editQuantity">
-            <button id="saveEdit">Save</button>
-            <button id="cancelEdit">Cancel</button>
+            <div class="purchaseInput">
+                <label for="txt_product">Product:</label>
+                <input type="text" id="txt_product" name="txt_product" value="${row_infoDtP[0].vchProduct}">
+            </div>
+
+            <div class="purchaseInput">
+                <label for="txt_description">Description:</label>
+                <textarea id="txt_description" name="txt_description"></textarea>
+            </div>
+
+            <div class="purchaseInput">
+                <label for="price">Price:</label>
+                <input type="text" id="txt_price" name="price" value="${row_infoDtP[0].fltPrice}">
+            </div>
+
+            <div class="purchaseInput">
+                <label for="txt_quantity">Quantity:</label>
+                <input type="number" id="txt_quantity" name="txt_quantity" value="${row_infoDtP[0].intQuantity}">
+            </div>
+
+            <div class="purchaseInput">
+                <label for="store">Store / Place:</label>
+                <select id="txt_store" name="txt_store">
+                    <option>Select branchstore</option>
+                </select>
+            </div>
+
+            <div class="purchaseInput">
+                <label for="relevance">Relevance:</label>
+                <select id="txt_relevance" name="txt_relevance">
+                    <option>Select relevance</option>
+                </select>
+            </div>
+
+            <div class="purchaseInput">
+                <label>Date:</label>
+                <input type="date" id="id_dtP">
+            </div>
+
+            <div class="btn_EditForm">
+                <img src="../imgResources/confirm_Icon.png" id="saveEdit">
+                <img src="../imgResources/cancel_Icon.png" id="cancelEdit">
+            </div>
         </div>
     </div>`;
 
+
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    const modal = document.getElementById('editModal');
-    const editPoS = document.getElementById('editPoS');
-    const editDescription = document.getElementById('editDescription');
-    const editPrice = document.getElementById('editPrice');
-    const editQuantity = document.getElementById('editQuantity');
+    const modal = document.getElementById('frm_editModal');
+    charge_editForm(id_dtP_edit);
+
+
+    const product = document.getElementById('txt_product');
+    const description = document.getElementById('txt_description');
+    description.value = row_infoDtP[0].vchDescription;
+    const price = document.getElementById('txt_price');
+    const quantity = document.getElementById('txt_quantity');
+    const branchstore = document.getElementById('txt_store');
+    const relevance = document.getElementById('txt_relevance');
+
     const saveEdit = document.getElementById('saveEdit');
     const cancelEdit = document.getElementById('cancelEdit');
-    let currentEditId = null;
+    cancelEdit.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    // 2. Capturar el click en el botón de edición
-    document.addEventListener('click', async (event) => {
-        if (event.target.classList.contains('btnEdit_dtPurchase')) {
-            idEdit = event.target.getAttribute('data-idEdit_DT');
-            console.log("id edit: ", idEdit)
-            // Obtener los datos actuales del registro
-            const row = event.target.closest('tr');
-            editPoS.value = row.children[0].textContent;
-            editDescription.value = row.children[1].textContent;
-            editPrice.value = row.children[2].textContent.replace('$', '').trim();
-            editQuantity.value = row.children[3].textContent;
-
-            // Mostrar el modal
-            modal.classList.remove('hide');
-        }
-    });
 
     // 3. Guardar los cambios
     saveEdit.addEventListener('click', async () => {
-        const updatedData = {
-            id: currentEditId,
-            PoS: editPoS.value,
-            Description: editDescription.value,
-            Price: parseFloat(editPrice.value),
-            Quantity: parseInt(editQuantity.value)
-        };
 
-        await main.updateDetailPurchase(updatedData);
-        modal.classList.add('hide');
+        let newDetails_edit = {};
+        newDetails_edit = {
+            vchProduct: product.value,
+            vchDescription: description.value,
+            fltPrice: parseFloat(price.value),
+            intQuantity: parseInt(quantity.value),
+            //subtotal is auto
+            idPurchase_fk: 0,
+            idBranchstore_fk: branchstore.value,
+            idRelevance_fk: relevance.value
+
+        }
+        /*
+        await main.updateDetailPurchase(updatedData);*/
+
         init(); // Recargar la tabla
     });
 
+
     // 4. Cancelar edición
     cancelEdit.addEventListener('click', () => {
-        modal.classList.add('hide');
+        modal.remove();
     });
 
+
 }
+
+
+
 
 const deleteDetail = async (id_dtP_del) => {
     /*console.log(idVenta);*/

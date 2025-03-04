@@ -155,13 +155,25 @@
 /* ---------------------------------------- */
 
 
-
-#newDtPurchaseDiv {
+#newDtPurchaseDiv{
     width: 60%;
+}
+
+
+
+
+.btn_EditForm{
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    /*border: solid rgb(255, 47, 203);*/
+    flex-direction:row;
+    justify-content: space-around;
+    width: 50%;
+    /*border: solid rgb(0, 255, 128);*/
+}
+#saveEdit, #cancelEdit{
+    width: 15%;
+    border: solid 3px;
+    border-radius: 5rem;
+    cursor: pointer;
 }
 
 .purchaseInput {

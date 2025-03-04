@@ -1,13 +1,8 @@
-//import { showMessage } from "./msgModals.js";
+const { remote } = require('electron');
+const main = remote.require('./main.js');
 
 
 const newDtPurchaseDiv = document.getElementById('newDtPurchaseDiv');
-
-const { remote } = require('electron');
-const { escape } = require('promise-mysql');
-const { Notification } = require('electron')
-const main = remote.require('./main.js');
-
 
 /* CHARGING FORM */
 function chargeForm() {
@@ -146,6 +141,7 @@ newDtPurchaseDiv.addEventListener('submit', async (err) => {
         // console.log("LLENR CAMPOS");
         return;
     }
+    
     newDetailPurchase = {
         vchProduct: product.value,
         vchDescription: description.value,
@@ -317,3 +313,5 @@ function clearForm() {
 
 
 chargeForm();
+
+module.exports = { charge_branchstores };

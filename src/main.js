@@ -1,6 +1,5 @@
 const { BrowserWindow, Notification } = require('electron')
 const { getConnection } = require('./sqlMoves/conectionDB')
-const path = require('path')
 
 /* Begin CRUDS boxCut */
 
@@ -45,7 +44,6 @@ async function getIdByDate(dtDate) {
   //console.log(results)
   return results;
 }
-
 
 
 async function getBranchstores() {
@@ -157,9 +155,17 @@ async function getPurchases(option, year, month, day) {
 }
 
 
+async function getDateById(id_Date) {
+  const query = "SELECT DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated FROM tbl_purchases WHERE idPurchase = ?"
+  const conn = await getConnection();
+  const results = await conn.query(query, [id_Date]);
+  //console.log(results)
+  return results;
+}
 
-async function getDtPurchase(idpurchase) {
-  let query = "SELECT * FROM tbl_dt_purchases WHERE id_dtPurchase =" + idpurchase + ";";
+
+async function getDetailById(id_dt) {
+  let query = "SELECT * FROM tbl_dt_purchases WHERE id_dtPurchase =" + id_dt + ";";
 
   const conn = await getConnection();
   const results = await conn.query(query)
@@ -181,6 +187,7 @@ async function getDetailPurchases(idpurchase) {
 
 
 
+
 async function editProduct(id) {
   console.log(id);
   /*
@@ -190,6 +197,50 @@ async function editProduct(id) {
   //console.log(results)
   //return results;
 }
+
+
+
+async function updatePurchase(detailpurchase) {
+  try {
+    const conn = await getConnection();
+
+    // Transform values for each column
+    detailpurchase.fltPrice = parseFloat(detailpurchase.fltPrice);
+    detailpurchase.intQuantity = parseInt(detailpurchase.intQuantity);
+    detailpurchase.idPurchase_fk = parseInt(detailpurchase.idPurchase_fk);
+    detailpurchase.idBranchstore_fk = parseInt(detailpurchase.idBranchstore_fk);
+    detailpurchase.idRelevance_fk = parseInt(detailpurchase.idRelevance_fk);
+
+    // CALL SP
+    const result = await conn.query(
+      'CALL SP_UpdateDetailInfo(?, ?, ?, ?, ?, ?, ?)',
+      [
+        detailpurchase.vchProduct,
+        detailpurchase.vchDescription,
+        detailpurchase.fltPrice,
+        detailpurchase.intQuantity,
+        detailpurchase.idPurchase_fk,
+        detailpurchase.idBranchstore_fk,
+        detailpurchase.idRelevance_fk
+      ]
+    );
+
+    /* // Mostrar notificación
+    new Notification({
+      title: 'Purchase complete',
+      body: 'New details registrated'
+    }).show();
+    */
+
+    return result; // Retorna el resultado de la inserción
+  }
+  catch (error) {
+    console.error("Error al registrar la compra:", error);
+    throw error; // Relanzar el error para manejarlo en otro lado si es necesario
+  }
+}
+
+
 
 async function deleteDetailPurchases(id) {
   //console.log(id);
@@ -210,7 +261,7 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
-      preload: path.join(__dirname, 'preload.js')
+      //preload: path.join(__dirname, 'preload.js')
     }
   })
 
@@ -240,8 +291,8 @@ module.exports = {
   newpurchase,
   updatePurchase,
   getPurchases,
-
-  getDtPurchase,
+  getDateById,
+  getDetailById,
   getDetailPurchases,
   deleteDetailPurchases,
 
