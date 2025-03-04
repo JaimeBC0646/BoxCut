@@ -188,19 +188,8 @@ async function getDetailPurchases(idpurchase) {
 
 
 
-async function editProduct(id) {
-  console.log(id);
-  /*
-  const conn = await getConnection();
-  const results = await conn.query("UPDATE tblProductos SET = ")
-  */
-  //console.log(results)
-  //return results;
-}
 
-
-
-async function updatePurchase(detailpurchase) {
+/*async function updateDetailPurchase(detailpurchase) {
   try {
     const conn = await getConnection();
 
@@ -225,13 +214,6 @@ async function updatePurchase(detailpurchase) {
       ]
     );
 
-    /* // Mostrar notificación
-    new Notification({
-      title: 'Purchase complete',
-      body: 'New details registrated'
-    }).show();
-    */
-
     return result; // Retorna el resultado de la inserción
   }
   catch (error) {
@@ -239,7 +221,7 @@ async function updatePurchase(detailpurchase) {
     throw error; // Relanzar el error para manejarlo en otro lado si es necesario
   }
 }
-
+*/
 
 
 async function deleteDetailPurchases(id) {
@@ -294,6 +276,7 @@ module.exports = {
   getDateById,
   getDetailById,
   getDetailPurchases,
+  //updateDetailPurchase,
   deleteDetailPurchases,
 
   /*
