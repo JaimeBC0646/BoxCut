@@ -156,7 +156,7 @@ async function getPurchases(option, year, month, day) {
 
 
 async function getDateById(id_Date) {
-  const query = "SELECT DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated FROM tbl_purchases WHERE idPurchase = ?"
+  const query = "SELECT dtDate AS dtDateFormated FROM tbl_purchases WHERE idPurchase = ?"
   const conn = await getConnection();
   const results = await conn.query(query, [id_Date]);
   //console.log(results)
@@ -200,7 +200,7 @@ async function editProduct(id) {
 
 
 
-async function updatePurchase(detailpurchase) {
+async function updateDetailPurchase(detailpurchase) {
   try {
     const conn = await getConnection();
 
@@ -213,12 +213,14 @@ async function updatePurchase(detailpurchase) {
 
     // CALL SP
     const result = await conn.query(
-      'CALL SP_UpdateDetailInfo(?, ?, ?, ?, ?, ?, ?)',
+      'CALL SP_UpdateDetailInfo(?, ?, ?, ?, ?, ?, ?, ?)',
       [
+        detailpurchase.id_dtPurchase,
         detailpurchase.vchProduct,
         detailpurchase.vchDescription,
         detailpurchase.fltPrice,
         detailpurchase.intQuantity,
+        //subtotal is auto
         detailpurchase.idPurchase_fk,
         detailpurchase.idBranchstore_fk,
         detailpurchase.idRelevance_fk
@@ -244,10 +246,10 @@ async function updatePurchase(detailpurchase) {
 
 async function deleteDetailPurchases(id) {
   //console.log(id);
-  
+
   const conn = await getConnection();
-  const results = await conn.query("DELETE FROM tbl_dt_purchases WHERE id_dtPurchase = "+id);
-  
+  const results = await conn.query("DELETE FROM tbl_dt_purchases WHERE id_dtPurchase = " + id);
+
   //console.log(results)
 }
 
@@ -291,9 +293,11 @@ module.exports = {
   newpurchase,
   updatePurchase,
   getPurchases,
+
   getDateById,
   getDetailById,
   getDetailPurchases,
+  updateDetailPurchase,
   deleteDetailPurchases,
 
   /*

@@ -2,75 +2,6 @@ const { remote } = require('electron');
 const main = remote.require('./main.js');
 
 
-/* CHARGING FORM */
-function charge_editForm(id) {
-    chargeDate(id)
-    charge_branchstores();
-    charge_revelances();
-}
-
-let inDate ="";
-const chargeDate = async (id_date) => {
-    var res = await main.getDateById(id_date);
-    //inDate = res[0];
-    console.log("fecha: ",res)
-}
-
-
-/* Charge data: Branchstore  -|START|- */
-let branchstores = [];
-const charge_branchstores = async () => {
-    branchstores = await main.getBranchstores();
-    //console.log(branchstores)
-
-    if (branchstores) {
-        branchstores.sort();   // Order A-Z
-        addOptions("txt_store", branchstores);
-    }
-
-    // Add options into <select>
-    function addOptions(domElement, branchstores) {
-        var select = document.getElementsByName(domElement)[0];
-        //console.log(branchstores[0].vchName);
-
-        for (value in branchstores) {
-            var option = document.createElement("option");
-            option.value = branchstores[value].idBranchstore;
-            option.text = branchstores[value].vchName;
-            select.add(option);
-        }
-    }
-}
-/* Charge data: Branchstore  -|END|- */
-
-
-/* Charge data: Relevance  -|START|- */
-let revelances = [];
-const charge_revelances = async () => {
-    revelances = await main.getRelevances();
-    //console.log(revelances)
-
-    if (revelances) {
-        revelances.sort();   // Order A-Z
-        addOptions("txt_relevance", revelances);
-    }
-
-    // Add options into <select>
-    function addOptions(domElement, revelances) {
-        var select = document.getElementsByName(domElement)[0];
-        //console.log(revelances[0].vchName);
-
-        for (value in revelances) {
-            var option = document.createElement("option");
-            option.value = revelances[value].idRelevance;
-            option.text = revelances[value].vchDescription;
-            select.add(option);
-        }
-    }
-}
-/* Charge data: Relevance  -|END|- */
-
-
 /*RDB selection   START*/
 const rdbGeneral = document.getElementById('rdbGeneral');
 const rdbFilter = document.getElementById('rdbFilter');
@@ -229,7 +160,7 @@ function renderdtPurchases(dtPurchases) {
                 <td>${dtPurchase.Relevance}</td>
                 <td>
                     <div class="btnActions">
-                        <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_dtPurchase"  data-idEdit_DT="${dtPurchase.id_dtP}" >
+                        <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_dtPurchase"  data-idEdit_DT="${dtPurchase.id_dtP}" data-idB_fk="${dtPurchase.idB_fk}" data-idR_fk="${dtPurchase.idR_fk}" data-idP_fk="${dtPurchase.idP_fk}" >
                         <img src ="../imgResources/deleteIcon.png" id="btnActionP" class="btnDelete_dtPurchase"  data-idDelete_DT="${dtPurchase.id_dtP}" >
                     </div>
                     
@@ -242,19 +173,102 @@ function renderdtPurchases(dtPurchases) {
 }
 
 
+
+
+/* CHARGING FORM */
+function charge_editForm(idDt, idB, idR) {
+    chargeDate(idDt)
+    charge_branchstores(idB);
+    charge_revelances(idR);
+}
+
+let inDate = "";
+const chargeDate = async (id_date) => {
+    //console.log("id_d: ",id_date)
+    var res = await main.getDateById(id_date);
+    resDate = res[0].dtDateFormated;
+    //console.log("fecha: ",resDate)
+
+    const year = resDate.getFullYear();
+    const p_month = resDate.getMonth() + 1;
+    var month = p_month > 9 ? p_month : "0" + p_month;
+    var day = resDate.getDate() > 9 ? resDate.getDate() : "0" + resDate.getDate();
+
+    dateFormatted = year + "-" + month + "-" + day;
+    //console.log(dateFormatted)
+    document.getElementById("txt_date").value = dateFormatted;
+}
+
+
+/* Charge data: Branchstore  -|START|- */
+let branchstores = [];
+const charge_branchstores = async (idB) => {
+    branchstores = await main.getBranchstores();
+    //console.log(branchstores)
+
+    if (branchstores) {
+        branchstores.sort();   // Order A-Z
+        addOptions("txt_store", branchstores);
+    }
+
+    // Add options into <select>
+    function addOptions(domElement, branchstores) {
+        var select = document.getElementsByName(domElement)[0];
+        //console.log(branchstores[0].vchName);
+
+        for (value in branchstores) {
+            var option = document.createElement("option");
+            option.value = branchstores[value].idBranchstore;
+            option.text = branchstores[value].vchName;
+            select.add(option);
+        }
+        select.value = idB;
+    }
+}
+/* Charge data: Branchstore  -|END|- */
+
+
+/* Charge data: Relevance  -|START|- */
+let revelances = [];
+const charge_revelances = async (idR) => {
+    revelances = await main.getRelevances();
+    //console.log(revelances)
+
+    if (revelances) {
+        revelances.sort();   // Order A-Z
+        addOptions("txt_relevance", revelances);
+    }
+
+    // Add options into <select>
+    function addOptions(domElement, revelances) {
+        var select = document.getElementsByName(domElement)[0];
+        //console.log(revelances[0].vchName);
+
+        for (value in revelances) {
+            var option = document.createElement("option");
+            option.value = revelances[value].idRelevance;
+            option.text = revelances[value].vchDescription;
+            select.add(option);
+            select.value = idR;
+        }
+    }
+}
+/* Charge data: Relevance  -|END|- */
+
+
 document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('btnView_dtPurchase')) {
         const idPurchase = event.target.getAttribute('data-idPurchase');   //console.log(idPurchase);
         init2(idPurchase);
     }
 
-
     if (event.target.classList.contains('btnEdit_dtPurchase')) {
         const idEdit_DT = event.target.getAttribute('data-idEdit_DT');   //console.log("Editado: ", idEdit_DT);
-        //console.log("Id click: ", idEdit_DT)
-        showDt_EditForm(idEdit_DT);
+        const idB_fk = event.target.getAttribute('data-idB_fk');
+        const idR_fk = event.target.getAttribute('data-idR_fk');
+        const idP_fk = event.target.getAttribute('data-idP_fk');
+        showDt_EditForm(idEdit_DT, idB_fk, idR_fk, idP_fk);
     }
-
 
     if (event.target.classList.contains('btnDelete_dtPurchase')) {
         const id_P_ref = event.target.getAttribute('data-idP_ref');   //console.log("IdP_Ref: ", id_P_ref);
@@ -279,19 +293,42 @@ const getDetailpurchases = async (idPurchase) => {
 
 }
 
+var new_IdP = 0;
+const query_IdP = async (dateF) => {
+    var result = await main.getIdByDate(dateF);
 
-const showDt_EditForm = async (id_dtP_edit) => {
+    if (result.length > 0) {
+        // console.log("ID LOCALIZADO: ", result[0].idPurchase);
+        new_IdP = result[0].idPurchase;
+        // console.log("Id_P actual", new_IdP);
+    } else {
+        // console.log("INSERTANDO FECHA");
+        await main.newDate(dateF);
+
+        // Wait to register the new ID
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        result = await main.getIdByDate(dateF); // Query again
+
+        if (result.length > 0) {
+            new_IdP = result[0].idPurchase;
+            // console.log("Nuevo ID asignado:", new_IdP);
+        } else {
+            // console.error("No se pudo obtener el ID después de insertar la fecha.");
+        }
+    }
+};
+
+
+const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk) => {
 
     const existingModal = document.getElementById('frm_editModal');
     if (existingModal) {
         existingModal.remove();
     }
 
-
     const row_infoDtP = await main.getDetailById(id_dtP_edit);
-
     //console.log(row_infoDtP[0]);
-
 
     // 1. Crear el modal en el HTML
     modalHTML = `
@@ -334,7 +371,7 @@ const showDt_EditForm = async (id_dtP_edit) => {
 
             <div class="purchaseInput">
                 <label>Date:</label>
-                <input type="date" id="id_dtP">
+                <input type="date" id="txt_date">
             </div>
 
             <div class="btn_EditForm">
@@ -348,8 +385,7 @@ const showDt_EditForm = async (id_dtP_edit) => {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
     const modal = document.getElementById('frm_editModal');
-    charge_editForm(id_dtP_edit);
-
+    charge_editForm(idP_fk, idB_fk, idR_fk);
 
     const product = document.getElementById('txt_product');
     const description = document.getElementById('txt_description');
@@ -358,7 +394,8 @@ const showDt_EditForm = async (id_dtP_edit) => {
     const quantity = document.getElementById('txt_quantity');
     const branchstore = document.getElementById('txt_store');
     const relevance = document.getElementById('txt_relevance');
-
+    const date = document.getElementById('txt_date');
+    date.value = inDate;
     const saveEdit = document.getElementById('saveEdit');
     const cancelEdit = document.getElementById('cancelEdit');
     cancelEdit.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -366,9 +403,15 @@ const showDt_EditForm = async (id_dtP_edit) => {
 
     // 3. Guardar los cambios
     saveEdit.addEventListener('click', async () => {
+        const confirmed = await confirmMessage("Are you sure you want to confirm edited details?");
+        if (!confirmed) {
+            showMessage("Action canceled!", "error");
+            return;
+        }
 
-        let newDetails_edit = {};
-        newDetails_edit = {
+        let updatedData = {};
+        updatedData = {
+            id_dtPurchase: id_dtP_edit,
             vchProduct: product.value,
             vchDescription: description.value,
             fltPrice: parseFloat(price.value),
@@ -377,12 +420,17 @@ const showDt_EditForm = async (id_dtP_edit) => {
             idPurchase_fk: 0,
             idBranchstore_fk: branchstore.value,
             idRelevance_fk: relevance.value
-
         }
-        /*
-        await main.updateDetailPurchase(updatedData);*/
 
+        await query_IdP(date.value);
+        updatedData.idPurchase_fk = new_IdP;
+
+
+        await main.updateDetailPurchase(updatedData);
+        showMessage("Detail updated!", "success", `Check details at ${date.value} changed successfully.`);
         init(); // Recargar la tabla
+        init2(id_dtP_edit);
+        modal.remove();
     });
 
 
