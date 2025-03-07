@@ -188,15 +188,6 @@ async function getDetailPurchases(idpurchase) {
 
 
 
-async function editProduct(id) {
-  console.log(id);
-  /*
-  const conn = await getConnection();
-  const results = await conn.query("UPDATE tblProductos SET = ")
-  */
-  //console.log(results)
-  //return results;
-}
 
 
 
@@ -226,13 +217,6 @@ async function updateDetailPurchase(detailpurchase) {
         detailpurchase.idRelevance_fk
       ]
     );
-
-    /* // Mostrar notificación
-    new Notification({
-      title: 'Purchase complete',
-      body: 'New details registrated'
-    }).show();
-    */
 
     return result; // Retorna el resultado de la inserción
   }
