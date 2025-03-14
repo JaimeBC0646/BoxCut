@@ -1,7 +1,7 @@
 const { BrowserWindow, Notification } = require('electron')
 const { getConnection } = require('./sqlMoves/conectionDB')
 
-/* Begin CRUDS boxCut */
+/* Begin CRUDS boxCut asd */
 
 /* -----| LOGIN |-----*/
 
