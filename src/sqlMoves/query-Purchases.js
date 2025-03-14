@@ -37,6 +37,7 @@ const purchasesList = document.getElementById('purchase')
 let purchases = []
 
 function renderPurchases(purchases) {
+    //console.log("compras: ", purchases)
     purchasesList.innerHTML = '';
 
     let tableHTML = `<table>
@@ -58,12 +59,12 @@ function renderPurchases(purchases) {
             </tbody></table>`;
     }
     else {
-        purchases.forEach((purchase) => {
+        purchases.forEach((purchase, index) => {
             tableHTML += `
             <tr>
                 <td><b>${purchase.dtDateFormated}</b></td>
                 <td align="right"><b>$${purchase.fltTotal}.00</b></td>
-                <td align="center"><button id="btnView_dtPurchase" class="btnView_dtPurchase" data-idPurchase="${purchase.idPurchase}">Detail</button></td>
+                <td align="center"><button id="btnView_dtPurchase" class="btnView_dtPurchase" data-idPurchase="${purchase.idPurchase}" data-index="${index}" >Detail</button></td>
             </tr>
             `;
         });
@@ -259,6 +260,12 @@ const charge_revelances = async (idR) => {
 document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('btnView_dtPurchase')) {
         const idPurchase = event.target.getAttribute('data-idPurchase');   //console.log(idPurchase);
+        const indexPurchase = event.target.getAttribute('data-index');   //console.log(indexPurchase);
+        //console.log(purchases[indexPurchase].dtDateFormated)
+
+        const divDate = document.getElementById("dateDetailed");
+        var dateSelecttoDetail = purchases[indexPurchase].dtDateFormated
+        divDate.innerHTML = dateSelecttoDetail;
         init2(idPurchase);
     }
 
@@ -428,8 +435,8 @@ const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk) => {
 
         await main.updateDetailPurchase(updatedData);
         showMessage("Detail updated!", "success", `Check details at ${date.value} changed successfully.`);
+        init2(idP_fk);
         init(); // Recargar la tabla
-        init2(id_dtP_edit);
         modal.remove();
     });
 

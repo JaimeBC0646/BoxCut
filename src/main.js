@@ -113,7 +113,7 @@ async function updatePurchase(id_P_fk) {
     const conn = await getConnection();
 
     // CALL SP
-    const query = "CALL SP_UpdateTotalPurchase(?)"
+    const query = "CALL SP_UpdateTotalPurchase_gen(?)"
     const result = await conn.query(query, [id_P_fk]);
 
     /* // Mostrar notificación
