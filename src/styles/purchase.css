@@ -39,6 +39,22 @@ label {
     /*border: solid cyan;*/
 }
 
+.loansDiv {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-right: 3rem;
+    margin-left: 3rem;
+    margin-bottom: 1rem;
+    /*border: solid cyan;*/
+}
+
+
+
+
+
+
+
 #dtInput:enabled {
     width: 25%;
     font-size: 16px;

@@ -45,7 +45,6 @@ async function getIdByDate(dtDate) {
   return results;
 }
 
-
 async function getBranchstores() {
 
   const query = "SELECT * FROM tbl_branchstore";
@@ -67,6 +66,8 @@ async function getRelevances() {
 }
 
 
+
+/* -----| DETAILS PRODUCT |-----*/
 
 async function newpurchase(detailpurchase) {
   try {
@@ -131,8 +132,6 @@ async function updatePurchase(id_P_fk) {
   }
 }
 
-//SP_UpdateTotalPurchase(?)
-
 async function getPurchases(option, year, month, day) {
   let query = "";
   /*let queryResponsable = "SELECT ";*/
@@ -154,7 +153,6 @@ async function getPurchases(option, year, month, day) {
   return results;
 }
 
-
 async function getDateById(id_Date) {
   const query = "SELECT dtDate AS dtDateFormated FROM tbl_purchases WHERE idPurchase = ?"
   const conn = await getConnection();
@@ -162,7 +160,6 @@ async function getDateById(id_Date) {
   //console.log(results)
   return results;
 }
-
 
 async function getDetailById(id_dt) {
   let query = "SELECT * FROM tbl_dt_purchases WHERE id_dtPurchase =" + id_dt + ";";
@@ -173,8 +170,6 @@ async function getDetailById(id_dt) {
   return results;
 }
 
-
-
 async function getDetailPurchases(idpurchase) {
   let query = "SELECT * FROM vw_purchaseDetail WHERE idP_fk =" + idpurchase + " ORDER BY id_dtP;";
 
@@ -183,13 +178,6 @@ async function getDetailPurchases(idpurchase) {
   //console.log(results)
   return results;
 }
-
-
-
-
-
-
-
 
 async function updateDetailPurchase(detailpurchase) {
   try {
@@ -226,8 +214,6 @@ async function updateDetailPurchase(detailpurchase) {
   }
 }
 
-
-
 async function deleteDetailPurchases(id) {
   //console.log(id);
 
@@ -236,6 +222,43 @@ async function deleteDetailPurchases(id) {
 
   //console.log(results)
 }
+
+
+
+/* -----| LOANS |-----*/
+async function getLoans() {
+  let query = "";
+  query = "SELECT vchBorrower, fltAmountM, vchDescription, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltRemaining, vchStatus FROM tbl_loans"
+
+  /*if (option === "general") {
+    query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltTotal FROM tbl_purchases ORDER BY dtDate DESC"
+  }
+  else if (option === "filter") {
+    query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltTotal"
+      + " FROM tbl_purchases"
+      + " WHERE YEAR(dtDate) = " + year
+      + " AND MONTH(dtDate) = " + month
+      + " AND DAY(dtDate) =" + day
+  }
+      */
+
+  const conn = await getConnection();
+  const results = await conn.query(query)
+
+  return results;
+}
+getLoans
+
+async function getLoanById(idL) {
+  let query = "SELECT * FROM tbl_loans WHERE idLoan =" + idL + ";";
+
+  const conn = await getConnection();
+  const results = await conn.query(query)
+  //console.log(results)
+  return results;
+}
+
+
 
 
 /*Begin Create windows App  */
@@ -253,7 +276,7 @@ function createWindow() {
 
   //win.loadFile('index.html')
   //win.loadFile('./src/index.html')
-  win.loadFile('./src/accessAdmin/purchases.html')
+  win.loadFile('./src/accessAdmin/loans.html')
 
   //win.webContents.openDevTools();
 }
@@ -284,12 +307,16 @@ module.exports = {
   updateDetailPurchase,
   deleteDetailPurchases,
 
+  getLoans,
+  getLoanById,
+  //getLoanByFilter,
   /*
   newInvestment,
   getInvestments,
   getDetailInvestments,
 
   getProducts,
+  getDateById,
   editProduct,
   deleteProduct,*/
 }

@@ -1,0 +1,106 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/bg.css">
+    <link rel="stylesheet" type="text/css" href="../styles/purchase.css">
+    <link rel="stylesheet" type="text/css" href="../styles/msgModals.css">
+    <title>BoxCut_v1 (admin)</title>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbarMain">
+        <ul class="ul-container">
+            <div class="sesionDiv">
+                <h1 id="userSesion">LOANS <br></h1>
+            </div>
+
+            <div>
+                <a href="./adminMenu.html">
+                    <li>MAIN MENU</li>
+                </a>
+                <a href="./purchases.html">
+                    <li>PURCHASES</li>
+                </a>
+                <a href="../index.html">
+                    <li>LOG OUT</li>
+                </a>
+            </div>
+        </ul>
+    </nav>
+
+    <!--
+    <div class="titleMod">
+        <h2>PURCHASES</h2>
+    </div>
+    -->
+
+    <div class="rdbDiv">
+        <div class="rdbOption">
+            <input type="radio" id="rdbGeneral" name="rdbQuery" value="general" checked>
+            <label class="rdbpurchaseQuery">General</label>
+        </div>
+
+        <div class="rdbOption">
+            <input type="radio" id="rdbFilter" name="rdbQuery" value="filter">
+            <label class="rdbpurchaseQuery">Filter by date</label>
+        </div>
+        <input type="text" disabled>
+
+        <h2 id="dateDetailed" ></h2>
+    </div>
+
+    
+
+
+    <!-- TABLES: PURCHASE & DT -->
+    <div class="loansDiv">
+
+        <!-- PURCHASE -->
+        <div class="loansRow">
+            <div class="scroll-table">
+                <div id="loan"></div>
+            </div>
+        </div>
+
+       
+    </div>
+
+
+    <!-- MESSAGE BOXES -->
+    <div id="confirmBox" class="confirm-container hide">
+        <div class="confirm-content">
+            <strong>
+                <p id="confirmText"></p>
+            </strong>
+            <div class="confirm-buttons">
+                <button id="confirmYes"><b>Yes</b></button>
+                <button id="confirmNo"><b>Cancel</b></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="msgBox">
+        <p id="msgText"></p>
+        <p id="msgSubtext" style="font-size: 14px; opacity: 0.8;"></p>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <script src="../sqlMoves/query-Loans.js"></script>
+    
+
+</body>
+
+</html>
