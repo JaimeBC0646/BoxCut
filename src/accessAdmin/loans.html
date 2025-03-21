@@ -26,6 +26,9 @@
                 <a href="./purchases.html">
                     <li>PURCHASES</li>
                 </a>
+                <a href="./incomes.html">
+                    <li>INCOMES</li>
+                </a>
                 <a href="../index.html">
                     <li>LOG OUT</li>
                 </a>
@@ -51,24 +54,68 @@
         </div>
         <input type="text" disabled>
 
-        <h2 id="dateDetailed" ></h2>
+        <h2 id="dateDetailed"></h2>
     </div>
 
-    
 
 
-    <!-- TABLES: PURCHASE & DT -->
     <div class="loansDiv">
 
-        <!-- PURCHASE -->
+        <!-- TABLE: LOAN -->
         <div class="loansRow">
             <div class="scroll-table">
                 <div id="loan"></div>
             </div>
         </div>
 
-       
+        <div id="frm_editModal">
+            <div class="edit_form">
+                <h2>New Loan</h2>
+                <div class="purchaseInput">
+                    <label for="txt_borrower">Borrower:</label>
+                    <input type="text" id="txt_borrower" name="txt_borrower">
+                </div>
+
+                <div class="purchaseInput">
+                    <label for="txt_description">Description:</label>
+                    <input id="txt_description" name="txt_description"></input>
+                </div>
+
+                <div class="purchaseInput">
+                    <label for="txt_amount">Amount:</label>
+                    <input type="text" id="txt_amount" name="txt_amount">
+                </div>
+
+                <div class="purchaseInput">
+                    <label for="txt_remaining">Remaining:</label>
+                    <input type="number" id="txt_remaining" name="txt_remaining">
+                </div>
+
+                <div class="purchaseInput">
+                    <label for="txt_status">Status:</label>
+                    <select id="txt_status" name="txt_status">
+                        <option value="">Select status</option>
+                        <option value="PAID">PAID</option>
+                        <option value="PENDING">PENDING</option>
+                    </select>
+                </div>
+
+                <div class="purchaseInput">
+                    <label for="txt_date">Date:</label>
+                    <input type="date" id="txt_date">
+                </div>
+
+                <div class="btn_EditForm">
+                    <img src="../imgResources/confirm_Icon.png" id="saveEdit">
+                    <img src="../imgResources/cancel_Icon.png" id="cancelEdit">
+                </div>
+            </div>
+        </div>
+        <Button class="btnNewLoan"> NEW LOAN</Button>
+
     </div>
+
+
 
 
     <!-- MESSAGE BOXES -->
@@ -99,7 +146,7 @@
 
 
     <script src="../sqlMoves/query-Loans.js"></script>
-    
+
 
 </body>
 

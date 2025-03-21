@@ -226,6 +226,46 @@ async function deleteDetailPurchases(id) {
 
 
 /* -----| LOANS |-----*/
+async function newpurchase(loan) {
+  try {
+    const conn = await getConnection();
+
+    // Transform values for each column
+    loan.fltAmountM = parseFloat(loan.fltAmountM);
+    loan.fltRemaining = parseFloat(loan.fltRemaining);
+
+
+    // CALL SP
+    const result = await conn.query(
+      'CALL SP_Insert_Loan(?, ?, ?, ?, ?, ?)',
+      [
+        loan.vchBorrower,
+        loan.fltAmountM,
+        loan.vchDescription,
+        loan.dtDate,
+        loan.fltRemaining,
+        loan.vchStatus
+      ]
+    );
+
+    /* // Mostrar notificación
+    new Notification({
+      title: 'Purchase complete',
+      body: 'New details registrated'
+    }).show();
+    */
+
+    return result; // Retorna el resultado de la inserción
+  }
+  catch (error) {
+    console.error("Error al registrar la compra:", error);
+    throw error; // Relanzar el error para manejarlo en otro lado si es necesario
+  }
+}
+
+
+
+
 async function getLoans() {
   let query = "";
   query = "SELECT vchBorrower, fltAmountM, vchDescription, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltRemaining, vchStatus FROM tbl_loans"
@@ -307,6 +347,7 @@ module.exports = {
   updateDetailPurchase,
   deleteDetailPurchases,
 
+  newLoan,
   getLoans,
   getLoanById,
   //getLoanByFilter,

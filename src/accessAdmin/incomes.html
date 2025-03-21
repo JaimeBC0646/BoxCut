@@ -16,15 +16,15 @@
     <nav class="navbarMain">
         <ul class="ul-container">
             <div class="sesionDiv">
-                <h1 id="userSesion">PURCHASES <br></h1>
+                <h1 id="userSesion">INCOMES <br></h1>
             </div>
 
             <div>
                 <a href="./adminMenu.html">
                     <li>MAIN MENU</li>
                 </a>
-                <a href="./incomes.html">
-                    <li>INCOMES</li>
+                <a href="./purchases.html">
+                    <li>PURCHASES</li>
                 </a>
                 <a href="./loans.html">
                     <li>LOANS</li>
@@ -52,7 +52,7 @@
             <input type="radio" id="rdbFilter" name="rdbQuery" value="filter">
             <label class="rdbpurchaseQuery">Filter by date</label>
         </div>
-        <input type="date" id="dtInput" disabled>
+        <input type="text" disabled>
 
         <h2 id="dateDetailed" ></h2>
     </div>
@@ -61,22 +61,16 @@
 
 
     <!-- TABLES: PURCHASE & DT -->
-    <div class="purchasesDiv">
+    <div class="loansDiv">
 
         <!-- PURCHASE -->
-        <div class="purchaseRow">
+        <div class="loansRow">
             <div class="scroll-table">
-                <div id="purchase"></div>
+                <div id="loan"></div>
             </div>
-            <a href="./newDtPurchase.html"><Button class="btnNewDtP"> NEW PURCASE</Button></a>
         </div>
 
-        <!-- DT -->
-        <div class="dt_purchaseRow">
-            <div class="scroll-table">
-                <div id="dtPurchase"></div>
-            </div>
-        </div>
+       
     </div>
 
 
@@ -107,9 +101,8 @@
 
 
 
-    <script src="../sqlMoves/query-Purchases.js"></script>
-    <script src="../sqlMoves/add_dtPurchase.js"></script>
-    <script src="../sqlMoves/msgModals.js"></script>
+    <script src="../sqlMoves/query-Incomes.js"></script>
+    
 
 </body>
 

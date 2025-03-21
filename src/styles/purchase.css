@@ -41,12 +41,18 @@ label {
 
 .loansDiv {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin-top: 1rem;
     margin-right: 3rem;
     margin-left: 3rem;
     margin-bottom: 1rem;
     /*border: solid cyan;*/
+}
+
+.btnNewLoan{
+    margin-top: 1rem;
 }
 
 
