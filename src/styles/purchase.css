@@ -48,7 +48,7 @@ label {
     margin-right: 3rem;
     margin-left: 3rem;
     margin-bottom: 1rem;
-    /*border: solid cyan;*/
+    border: solid cyan;
 }
 
 .btnNewLoan{
@@ -166,13 +166,9 @@ label {
 /*//////////////////////////////////////////////////////////////////////*/
 
 
-#frm_editModal{
-    margin-bottom: 2rem;
-}
-.edit_form{
-    width: 60%;
-    /*border: solid rgb(0, 255, 128);*/
-}
+
+
+
 
 
 
@@ -183,6 +179,12 @@ label {
     width: 50%;
     /*border: solid rgb(0, 255, 128);*/
 }
+
+
+
+
+
+
 #saveEdit, #cancelEdit{
     width: 15%;
     border: solid 3px;
@@ -190,12 +192,5 @@ label {
     cursor: pointer;
 }
 
-.purchaseInput {
-    width: 70%;
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /*border: solid red;*/
-}
+
 

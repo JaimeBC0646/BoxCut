@@ -59,41 +59,41 @@ const showLoan_EditForm = async (idEdit_Loan) => {
     <div id="frm_editModal">
         <div class="edit_form">
             <h2>Edit Purchase Detail</h2>
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="txt_product">Product:</label>
                 <input type="text" id="txt_product" name="txt_product" value="${row_infoLoan[0].vchProduct}">
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="txt_description">Description:</label>
                 <textarea id="txt_description" name="txt_description"></textarea>
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="price">Price:</label>
                 <input type="text" id="txt_price" name="price" value="${row_infoLoan[0].fltPrice}">
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="txt_quantity">Quantity:</label>
                 <input type="number" id="txt_quantity" name="txt_quantity" value="${row_infoLoan[0].intQuantity}">
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="store">Store / Place:</label>
                 <select id="txt_store" name="txt_store">
                     <option>Select branchstore</option>
                 </select>
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="relevance">Relevance:</label>
                 <select id="txt_relevance" name="txt_relevance">
                     <option>Select relevance</option>
                 </select>
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label>Date:</label>
                 <input type="date" id="txt_date">
             </div>

@@ -60,7 +60,6 @@
 
 
     <div class="loansDiv">
-
         <!-- TABLE: LOAN -->
         <div class="loansRow">
             <div class="scroll-table">
@@ -68,51 +67,7 @@
             </div>
         </div>
 
-        <div id="frm_editModal">
-            <div class="edit_form">
-                <h2>New Loan</h2>
-                <div class="purchaseInput">
-                    <label for="txt_borrower">Borrower:</label>
-                    <input type="text" id="txt_borrower" name="txt_borrower">
-                </div>
-
-                <div class="purchaseInput">
-                    <label for="txt_description">Description:</label>
-                    <input id="txt_description" name="txt_description"></input>
-                </div>
-
-                <div class="purchaseInput">
-                    <label for="txt_amount">Amount:</label>
-                    <input type="text" id="txt_amount" name="txt_amount">
-                </div>
-
-                <div class="purchaseInput">
-                    <label for="txt_remaining">Remaining:</label>
-                    <input type="number" id="txt_remaining" name="txt_remaining">
-                </div>
-
-                <div class="purchaseInput">
-                    <label for="txt_status">Status:</label>
-                    <select id="txt_status" name="txt_status">
-                        <option value="">Select status</option>
-                        <option value="PAID">PAID</option>
-                        <option value="PENDING">PENDING</option>
-                    </select>
-                </div>
-
-                <div class="purchaseInput">
-                    <label for="txt_date">Date:</label>
-                    <input type="date" id="txt_date">
-                </div>
-
-                <div class="btn_EditForm">
-                    <img src="../imgResources/confirm_Icon.png" id="saveEdit">
-                    <img src="../imgResources/cancel_Icon.png" id="cancelEdit">
-                </div>
-            </div>
-        </div>
-        <Button class="btnNewLoan"> NEW LOAN</Button>
-
+        <Button class="btnNewLoan" id="btnNewLoan"> NEW LOAN</Button>
     </div>
 
 
@@ -137,7 +92,7 @@
     </div>
 
 
-
+    
 
 
 
@@ -146,6 +101,7 @@
 
 
     <script src="../sqlMoves/query-Loans.js"></script>
+    <script src="../sqlMoves/msgModals.js"></script>
 
 
 </body>

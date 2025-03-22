@@ -113,11 +113,18 @@ font-family:'Arial';
 
 /*---------------------------------------------------*/
 
-#newDtPurchaseDiv, #frm_editModal, .edit_form {
+#newDtPurchaseDiv, #frm_editModal, .edit_form, #frm_insertModal, .insert_form {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 2rem;
     /*border: solid rgb(255, 47, 203);*/
+}
+
+
+.edit_form, .insert_form{
+    width: 50%;
+    border: solid rgb(0, 255, 128);
 }
 
 
@@ -156,9 +163,9 @@ tbody tr:hover {
 
 /* ----------|  INPUTS |---------- */
 #dtP_Input,
-.purchaseInput input,
-.purchaseInput textarea,
-.purchaseInput select {
+.inputForm input,
+.inputForm textarea,
+.inputForm select {
     width: 65%;
     background-color: rgb(228, 199, 162);
     border: solid 3px black;
@@ -170,6 +177,16 @@ tbody tr:hover {
     font-size: 1rem;
     font-family: Arial, Helvetica, sans-serif;
     text-align: end;
+}
+
+
+.inputForm {
+    width: 70%;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*border: solid red;*/
 }
 
 

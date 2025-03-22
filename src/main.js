@@ -67,6 +67,8 @@ async function getRelevances() {
 
 
 
+
+
 /* -----| DETAILS PRODUCT |-----*/
 
 async function newpurchase(detailpurchase) {
@@ -225,8 +227,10 @@ async function deleteDetailPurchases(id) {
 
 
 
+
+
 /* -----| LOANS |-----*/
-async function newpurchase(loan) {
+async function newLoan(loan) {
   try {
     const conn = await getConnection();
 
@@ -263,12 +267,9 @@ async function newpurchase(loan) {
   }
 }
 
-
-
-
 async function getLoans() {
   let query = "";
-  query = "SELECT vchBorrower, fltAmountM, vchDescription, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltRemaining, vchStatus FROM tbl_loans"
+  query = "SELECT idLoan, vchBorrower, fltAmountM, vchDescription, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltRemaining, vchStatus FROM tbl_loans"
 
   /*if (option === "general") {
     query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltTotal FROM tbl_purchases ORDER BY dtDate DESC"
@@ -297,6 +298,49 @@ async function getLoanById(idL) {
   //console.log(results)
   return results;
 }
+
+async function updateLoan(loan) {
+  try {
+    const conn = await getConnection();
+
+    // Transform values for each column
+    loan.fltAmountM = parseFloat(loan.fltAmountM);
+    loan.fltRemaining = parseFloat(loan.fltRemaining);
+
+    // CALL SP
+    const result = await conn.query(
+      'CALL SP_UpdateLoanInfo(?, ?, ?, ?, ?, ?, ?, ?)',
+      [
+        loan.vchBorrower,
+        loan.fltAmountM,
+        loan.vchDescription,
+        loan.dtDate,
+        loan.fltRemaining,
+        loan.vchStatus,
+        loan.idLoan
+      ]
+    );
+
+    return result; // Retorna el resultado de la inserción
+  }
+  catch (error) {
+    console.error("Error al registrar la compra:", error);
+    throw error; // Relanzar el error para manejarlo en otro lado si es necesario
+  }
+}
+
+async function deleteLoan(id) {
+  //console.log(id);
+
+  const conn = await getConnection();
+  const results = await conn.query("DELETE FROM tbl_loans WHERE idLoan = " + id);
+
+  //console.log(results)
+}
+
+
+
+
 
 
 
@@ -350,6 +394,8 @@ module.exports = {
   newLoan,
   getLoans,
   getLoanById,
+  updateLoan,
+  deleteLoan,
   //getLoanByFilter,
   /*
   newInvestment,

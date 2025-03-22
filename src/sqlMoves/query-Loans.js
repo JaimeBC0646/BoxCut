@@ -39,9 +39,22 @@ document.addEventListener('click', async (event) => {
         charge_newLoanForm();
     }
 
-    if (event.target.classList.contains('btnEdit_dtPurchase')) {
-        const idEdit_Loan = event.target.getAttribute('data-idEdit_Loan');   //console.log("Editado: ", idEdit_Loan);
+    if (event.target.classList.contains('btnEdit_L')) {
+        const idEdit_Loan = event.target.getAttribute('data-idEdit_Loan'); console.log("Editado: ", idEdit_Loan);
         showLoan_EditForm(idEdit_Loan);
+    }
+
+    if (event.target.classList.contains('btnDelete_L')) {
+        const idDelete_Loan = event.target.getAttribute('data-idDelete_Loan');
+        console.log("classID: ", idDelete_Loan);
+        const confirmed = await confirmMessage("Are you sure you want to delete this detail?");
+        if (!confirmed) {
+            showMessage("Action canceled!", "error");
+            return;
+        }
+
+        deleteLoanInfo(idDelete_Loan);   //console.log("Eliminado: ", idDelete_Loan);
+        init();
     }
 });
 
@@ -49,199 +62,194 @@ document.addEventListener('click', async (event) => {
 
 
 const charge_newLoanForm = async () => {
-
-
     // Creat edit form
+    const buttonNewLoan = document.getElementById("btnNewLoan");
+    buttonNewLoan.setAttribute("hidden", "");
     modalHTML = `
-    <div id="frm_editModal">
-            <div class="edit_form">
-                <h2>New Loan</h2>
-                <div class="purchaseInput">
-                    <label for="txt_borrower">Borrower:</label>
-                    <input type="text" id="txt_borrower" name="txt_borrower">
-                </div>
-
-                <div class="purchaseInput">
-                    <label for="txt_description">Description:</label>
-                    <input id="txt_description" name="txt_description"></input>
-                </div>
-
-                <div class="purchaseInput">
-                    <label for="txt_amount">Amount:</label>
-                    <input type="text" id="txt_amount" name="txt_amount">
-                </div>
-
-                <div class="purchaseInput">
-                    <label for="txt_remaining">Remaining:</label>
-                    <input type="number" id="txt_remaining" name="txt_remaining">
-                </div>
-
-                <div class="purchaseInput">
-                    <label for="txt_status">Status:</label>
-                    <select id="txt_status" name="txt_status">
-                        <option value="">Select status</option>
-                        <option value="PAID">PAID</option>
-                        <option value="PENDING">PENDING</option>
-                    </select>
-                </div>
-
-                <div class="purchaseInput">
-                    <label for="txt_date">Date:</label>
-                    <input type="date" id="txt_date">
-                </div>
-
-                <div class="btn_EditForm">
-                    <img src="../imgResources/confirm_Icon.png" id="saveEdit">
-                    <img src="../imgResources/cancel_Icon.png" id="cancelEdit">
-                </div>
+    <div id="frm_insertModal">
+        <div class="insert_form">
+            <h2>New Loan</h2>
+            <div class="inputForm">
+                <label for="txt_borrower">Borrower:</label>
+                <input type="text" id="txt_borrower" name="txt_borrower">
             </div>
-        </div>`;
-    
+
+            <div class="inputForm">
+                <label for="txt_description">Description:</label>
+                <input id="txt_description" name="txt_description"></input>
+            </div>
+
+            <div class="inputForm">
+                <label for="txt_amount">Amount:</label>
+                <input type="text" id="txt_amount" name="txt_amount">
+            </div>
+
+            <div class="inputForm">
+                <label for="txt_remaining">Remaining:</label>
+                <input type="number" id="txt_remaining" name="txt_remaining">
+            </div>
+
+            <div class="inputForm">
+                <label for="txt_status">Status:</label>
+                <select id="txt_status" name="txt_status">
+                    <option value="">Select status</option>
+                    <option value="PAID">PAID</option>
+                    <option value="PENDING">PENDING</option>
+                </select>
+            </div>
+
+            <div class="inputForm">
+                <label for="txt_date">Date:</label>
+                <input type="date" id="txt_date">
+            </div>
+
+            <div class="btn_EditForm">
+                <Button id="btnAddLoan"> ADD LOAN</Button>
+                <Button id="btnCancelLoan"> CANCEL</Button>
+            </div>
+        </div>
+    </div>`;
+
 
 
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    const modal = document.getElementById('frm_editModal');
-    charge_editForm(idP_fk, idB_fk, idR_fk);
 
-    const product = document.getElementById('txt_product');
+    const modal = document.getElementById('frm_insertModal');
+
+    const borrower = document.getElementById('txt_borrower');
     const description = document.getElementById('txt_description');
-    description.value = row_infoLoan[0].vchDescription;
-    const price = document.getElementById('txt_price');
-    const quantity = document.getElementById('txt_quantity');
-    const branchstore = document.getElementById('txt_store');
-    const relevance = document.getElementById('txt_relevance');
+    const amount = document.getElementById('txt_amount');
+    const remaining = document.getElementById('txt_remaining');
+    const status = document.getElementById('txt_status');
     const date = document.getElementById('txt_date');
-    date.value = inDate;
-    const saveEdit = document.getElementById('saveEdit');
-    const cancelEdit = document.getElementById('cancelEdit');
-    cancelEdit.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    const saveNewLoan = document.getElementById('btnAddLoan');
+    const cancelLoan = document.getElementById('btnCancelLoan');
+    cancelLoan.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
 
     // Save changes
-    saveEdit.addEventListener('click', async () => {
-        const confirmed = await confirmMessage("Are you sure you want to confirm edited details?");
+    saveNewLoan.addEventListener('click', async () => {
+        const confirmed = await confirmMessage("Are you sure you want to confirm new loan?");
         if (!confirmed) {
             showMessage("Action canceled!", "error");
             return;
         }
 
-        let updatedData = {};
-        updatedData = {
-            id_dtPurchase: id_dtP_edit,
-            vchProduct: product.value,
+        let loanData = {};
+        loanData = {
+            vchBorrower: borrower.value,
+            fltAmountM: amount.value,
             vchDescription: description.value,
-            fltPrice: parseFloat(price.value),
-            intQuantity: parseInt(quantity.value),
-            //subtotal is auto
-            idPurchase_fk: 0,
-            idBranchstore_fk: branchstore.value,
-            idRelevance_fk: relevance.value
+            dtDate: date.value,
+            fltRemaining: remaining.value,
+            vchStatus: status.value
         }
 
-        await query_IdP(date.value);
-        updatedData.idPurchase_fk = new_IdP;
-
-
-        await main.updateDetailPurchase(updatedData);
-        showMessage("Detail updated!", "success", `Check details at ${date.value} changed successfully.`);
-        init2(idP_fk);
-        init(); // Recargar la tabla
+        await main.newLoan(loanData);
+        showMessage("Loan registrated!", "success", `borrower.value has $remaining.value  remaining.`);
+        //init();
         modal.remove();
+        buttonNewLoan.removeAttribute("hidden", "");
+        init()
     });
-
 
     // Cancel edit
-    cancelEdit.addEventListener('click', () => {
+    cancelLoan.addEventListener('click', () => {
+        showMessage("Loan canceled!", "error", `The register was canceled`);
         modal.remove();
+        buttonNewLoan.removeAttribute("hidden", "");
     });
-
-
 }
 
+
+
+
+
+
+const chargeDate = async (res_date) => {
+    const year = res_date.getFullYear();
+    const p_month = res_date.getMonth() + 1;
+    var month = p_month > 9 ? p_month : "0" + p_month;
+    var day = res_date.getDate() > 9 ? res_date.getDate() : "0" + res_date.getDate();
+
+    dateFormatted = year + "-" + month + "-" + day;
+    //console.log(dateFormatted)
+    document.getElementById("txt_date").value = dateFormatted;
+}
 
 
 
 const showLoan_EditForm = async (idEdit_Loan) => {
 
-    const existingModal = document.getElementById('frm_editModal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-
     const row_infoLoan = await main.getLoanById(idEdit_Loan);
-    console.log(row_infoLoan[0]);
+    //console.log(row_infoLoan[0].dtDate);
 
-    /*
+    
     // Creat edit form
     modalHTML = `
-    <div id="frm_editModal">
-        <div class="edit_form">
-            <h2>Edit Purchase Detail</h2>
-            <div class="purchaseInput">
-                <label for="txt_product">Product:</label>
-                <input type="text" id="txt_product" name="txt_product" value="${row_infoLoan[0].vchProduct}">
+    <div id="frm_insertModal">
+        <div class="insert_form">
+            <h2>New Loan</h2>
+            <div class="inputForm">
+                <label for="txt_borrower">Borrower:</label>
+                <input type="text" id="txt_borrower" name="txt_borrower" value="${row_infoLoan[0].vchBorrower}">
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="txt_description">Description:</label>
                 <textarea id="txt_description" name="txt_description"></textarea>
             </div>
 
-            <div class="purchaseInput">
-                <label for="price">Price:</label>
-                <input type="text" id="txt_price" name="price" value="${row_infoLoan[0].fltPrice}">
+            <div class="inputForm">
+                <label for="txt_amount">Amount:</label>
+                <input type="text" id="txt_amount" name="txt_amount" value="${row_infoLoan[0].fltAmountM}">
             </div>
 
-            <div class="purchaseInput">
-                <label for="txt_quantity">Quantity:</label>
-                <input type="number" id="txt_quantity" name="txt_quantity" value="${row_infoLoan[0].intQuantity}">
+            <div class="inputForm">
+                <label for="txt_remaining">Remaining:</label>
+                <input type="number" id="txt_remaining" name="txt_remaining" value="${row_infoLoan[0].fltRemaining}">
             </div>
 
-            <div class="purchaseInput">
-                <label for="store">Store / Place:</label>
-                <select id="txt_store" name="txt_store">
-                    <option>Select branchstore</option>
+            <div class="inputForm">
+                <label for="txt_status">Status:</label>
+                <select id="txt_status" name="txt_status">
+                    <option value="">Select status</option>
+                    <option value="PAID">PAID</option>
+                    <option value="PENDING">PENDING</option>
                 </select>
             </div>
 
-            <div class="purchaseInput">
-                <label for="relevance">Relevance:</label>
-                <select id="txt_relevance" name="txt_relevance">
-                    <option>Select relevance</option>
-                </select>
-            </div>
-
-            <div class="purchaseInput">
-                <label>Date:</label>
+            <div class="inputForm">
+                <label for="txt_date">Date:</label>
                 <input type="date" id="txt_date">
             </div>
 
             <div class="btn_EditForm">
-                <img src="../imgResources/confirm_Icon.png" id="saveEdit">
-                <img src="../imgResources/cancel_Icon.png" id="cancelEdit">
+                <Button id="btnAddLoan"> ADD LOAN</Button>
+                <Button id="btnCancelLoan"> CANCEL</Button>
             </div>
         </div>
-    </div>`;
-    */
-
+    </div>
+    `;
 
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
     const modal = document.getElementById('frm_editModal');
-    charge_editForm(idP_fk, idB_fk, idR_fk);
+    //charge_editForm(idP_fk, idB_fk, idR_fk);
 
-    const product = document.getElementById('txt_product');
+
+    const borrower = document.getElementById('txt_borrower');
     const description = document.getElementById('txt_description');
     description.value = row_infoLoan[0].vchDescription;
-    const price = document.getElementById('txt_price');
-    const quantity = document.getElementById('txt_quantity');
-    const branchstore = document.getElementById('txt_store');
-    const relevance = document.getElementById('txt_relevance');
-    const date = document.getElementById('txt_date');
-    date.value = inDate;
-    const saveEdit = document.getElementById('saveEdit');
-    const cancelEdit = document.getElementById('cancelEdit');
+    const amount = document.getElementById('txt_amount');
+    const remaining = document.getElementById('txt_remaining');
+    const status = document.getElementById('txt_status');
+    //const date = document.getElementById('txt_date');
+    chargeDate(row_infoLoan[0].dtDate);
+    const saveEdit = document.getElementById('btnAddLoan');
+    const cancelEdit = document.getElementById('btnCancelLoan');
     cancelEdit.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
 
@@ -253,27 +261,22 @@ const showLoan_EditForm = async (idEdit_Loan) => {
             return;
         }
 
-        let updatedData = {};
-        updatedData = {
-            id_dtPurchase: id_dtP_edit,
-            vchProduct: product.value,
+        let updated_loanData = {};
+        updated_loanData = {
+            vchBorrower: borrower.value,
+            fltAmountM: amount.value,
             vchDescription: description.value,
-            fltPrice: parseFloat(price.value),
-            intQuantity: parseInt(quantity.value),
-            //subtotal is auto
-            idPurchase_fk: 0,
-            idBranchstore_fk: branchstore.value,
-            idRelevance_fk: relevance.value
+            dtDate: date.value,
+            fltRemaining: remaining.value,
+            vchStatus: status.value,
+            idLoan: idEdit_Loan
         }
 
-        await query_IdP(date.value);
-        updatedData.idPurchase_fk = new_IdP;
 
 
-        await main.updateDetailPurchase(updatedData);
+        await main.updateLoan(updated_loanData);
         showMessage("Detail updated!", "success", `Check details at ${date.value} changed successfully.`);
-        init2(idP_fk);
-        init(); // Recargar la tabla
+        init();
         modal.remove();
     });
 
@@ -286,7 +289,11 @@ const showLoan_EditForm = async (idEdit_Loan) => {
 
 }
 
+const deleteLoanInfo = async (idDelete_Loan) => {
+    console.log("FuncID: ", idDelete_Loan);
+    await main.deleteLoan(idDelete_Loan);
 
+}
 
 
 
@@ -322,7 +329,7 @@ function renderLoans(loans) {
     }
     else {
         loans.forEach((loan) => {
-            var colorStatus = (loan.vchStatus == 'PAID'? 'green' : 'red');
+            var colorStatus = (loan.vchStatus == 'PAID' ? 'green' : 'red');
             tableHTML += `
             <tr>
                 <td><b>${loan.vchBorrower}</b></td>
@@ -335,10 +342,9 @@ function renderLoans(loans) {
 
                 <td>
                     <div class="btnActions">
-                        <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_dtPurchase"  data-idEdit_Loan="${loan.idLoan}" >
-                        <img src ="../imgResources/deleteIcon.png" id="btnActionP" class="btnDelete_dtPurchase"  data-idDelete_Loan="${loan.idLoan}" >
+                        <img src ="../imgResources/editIcon.png" id="btnEdit_L" class="btnEdit_L" data-idEdit_Loan="${loan.idLoan}" >
+                        <img src ="../imgResources/deleteIcon.png" id="btnDelete_L" class="btnDelete_L" data-idDelete_Loan="${loan.idLoan}" >
                     </div>
-                    
                 </td>
             </tr>
             `;

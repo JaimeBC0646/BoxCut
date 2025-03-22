@@ -183,7 +183,6 @@ function charge_editForm(idDt, idB, idR) {
     charge_revelances(idR);
 }
 
-let inDate = "";
 const chargeDate = async (id_date) => {
     //console.log("id_d: ",id_date)
     var res = await main.getDateById(id_date);
@@ -342,41 +341,41 @@ const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk) => {
     <div id="frm_editModal">
         <div class="edit_form">
             <h2>Edit Purchase Detail</h2>
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="txt_product">Product:</label>
                 <input type="text" id="txt_product" name="txt_product" value="${row_infoDtP[0].vchProduct}">
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="txt_description">Description:</label>
                 <textarea id="txt_description" name="txt_description"></textarea>
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="price">Price:</label>
                 <input type="text" id="txt_price" name="price" value="${row_infoDtP[0].fltPrice}">
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="txt_quantity">Quantity:</label>
                 <input type="number" id="txt_quantity" name="txt_quantity" value="${row_infoDtP[0].intQuantity}">
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="store">Store / Place:</label>
                 <select id="txt_store" name="txt_store">
                     <option>Select branchstore</option>
                 </select>
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label for="relevance">Relevance:</label>
                 <select id="txt_relevance" name="txt_relevance">
                     <option>Select relevance</option>
                 </select>
             </div>
 
-            <div class="purchaseInput">
+            <div class="inputForm">
                 <label>Date:</label>
                 <input type="date" id="txt_date">
             </div>
@@ -401,8 +400,7 @@ const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk) => {
     const quantity = document.getElementById('txt_quantity');
     const branchstore = document.getElementById('txt_store');
     const relevance = document.getElementById('txt_relevance');
-    const date = document.getElementById('txt_date');
-    date.value = inDate;
+    //const date = document.getElementById('txt_date');
     const saveEdit = document.getElementById('saveEdit');
     const cancelEdit = document.getElementById('cancelEdit');
     cancelEdit.scrollIntoView({ behavior: 'smooth', block: 'center' });
