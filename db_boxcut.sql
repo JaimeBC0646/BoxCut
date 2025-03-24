@@ -265,6 +265,26 @@ DELIMITER $$
 
 DELIMITER ;
 
+/* Procedure structure for procedure `SP_ActualizaPrecio` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `SP_ActualizaPrecio` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_ActualizaPrecio`(in id_dtP int)
+BEGIN
+	DECLARE sumDt FLOAT;
+	
+	SELECT SUM(fltSubtotal)
+	INTO sumDt 
+	FROM tbl_dt_purchases 
+	WHERE idPurchase_fk = id_dtP;
+    
+    
+	update tbl_purchases SET fltTotal = sumDt WHERE idPurchase = id_dtP;
+    END */$$
+DELIMITER ;
+
 /* Procedure structure for procedure `SP_Insert_DtPurchase` */
 
 /*!50003 DROP PROCEDURE IF EXISTS  `SP_Insert_DtPurchase` */;
@@ -352,6 +372,26 @@ BEGIN
 	   fltRemaining = remaining, 
 	   vchStatus = stat 
 	WHERE idLoan = id_L;
+    END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `SP_UpdateTotalPurchase` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `SP_UpdateTotalPurchase` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_UpdateTotalPurchase`(in id_dtP int)
+BEGIN
+	DECLARE sumDt FLOAT;
+	
+	SELECT SUM(fltSubtotal)
+	INTO sumDt 
+	FROM tbl_dt_purchases 
+	WHERE idPurchase_fk = id_dtP;
+    
+    
+	update tbl_purchases SET fltTotal = sumDt WHERE idPurchase = id_dtP;
     END */$$
 DELIMITER ;
 
