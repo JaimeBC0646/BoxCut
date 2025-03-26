@@ -309,7 +309,7 @@ async function updateLoan(loan) {
 
     // CALL SP
     const result = await conn.query(
-      'CALL SP_UpdateLoanInfo(?, ?, ?, ?, ?, ?, ?, ?)',
+      'CALL SP_UpdateLoanInfo(?, ?, ?, ?, ?, ?, ?)',
       [
         loan.vchBorrower,
         loan.fltAmountM,

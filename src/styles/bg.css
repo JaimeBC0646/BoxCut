@@ -16,7 +16,8 @@ font-family:'Arial';
 }
 
 .sesionDiv{
-    width: 50%;
+    padding-left: 2rem;
+    padding-right: 2rem;
     text-align: center;
     background:  #ff590097;
     border: solid 3px black;
@@ -31,6 +32,7 @@ font-family:'Arial';
     width: 80%;
     padding: 0.5rem;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     text-align: center;
     list-style: none;
@@ -40,23 +42,31 @@ font-family:'Arial';
 }
 
 .ul-container li{
-    display: inline-block;
+    
     font-size: 1.5rem;
-    padding-right: 1rem;
-    padding-left: 1rem;
+    
     transition: all ease-in-out 250ms;
-}
 
-.ul-container a li{
-    font-size: 1.5rem;
-    color: rgb(0, 0, 0);
+}
+.divViews{
+    display:flex;
+    justify-content: space-around;
+    margin-right: 2rem;
+    /*border: solid red ;*/
+}
+.divViews a{
     text-decoration: none;
-    font-family:'Buxton Sketch';
+    font-size: 1.5rem;
+    margin:0.5rem;
+    padding:0.5rem;
+    border-radius: 1rem;
+    color: black;
+    
 }
 
-.ul-container li:hover{
+.ul-container a:hover{
+    transition: all ease-in-out 400ms;
     background: #ff9d0a;
-    border-radius: 40px;
 }
 /*FIN - NAVBAR*/
 
@@ -124,7 +134,7 @@ font-family:'Arial';
 
 .edit_form, .insert_form{
     width: 50%;
-    border: solid rgb(0, 255, 128);
+    /*border: solid rgb(0, 255, 128);*/
 }
 
 

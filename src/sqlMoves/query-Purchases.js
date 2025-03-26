@@ -195,7 +195,7 @@ const chargeDate = async (id_date) => {
     var day = resDate.getDate() > 9 ? resDate.getDate() : "0" + resDate.getDate();
 
     dateFormatted = year + "-" + month + "-" + day;
-    //console.log(dateFormatted)
+    console.log(dateFormatted)
     document.getElementById("txt_date").value = dateFormatted;
 }
 
@@ -230,9 +230,12 @@ const charge_branchstores = async (idB) => {
 
 /* Charge data: Relevance  -|START|- */
 let revelances = [];
+let status = [];
+
 const charge_revelances = async (idR) => {
     revelances = await main.getRelevances();
     //console.log(revelances)
+
 
     if (revelances) {
         revelances.sort();   // Order A-Z
@@ -400,7 +403,8 @@ const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk) => {
     const quantity = document.getElementById('txt_quantity');
     const branchstore = document.getElementById('txt_store');
     const relevance = document.getElementById('txt_relevance');
-    //const date = document.getElementById('txt_date');
+    const date = document.getElementById('txt_date');
+    //console.log(date.value)
     const saveEdit = document.getElementById('saveEdit');
     const cancelEdit = document.getElementById('cancelEdit');
     cancelEdit.scrollIntoView({ behavior: 'smooth', block: 'center' });

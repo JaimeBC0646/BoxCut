@@ -34,13 +34,58 @@ date.addEventListener('change', () => {
 
 
 
+let status = [];
+const charge_status = async (stat) => {
+    status = ['PENDING ', 'PAID']
+    //console.log(status)
+
+    if (status) {
+        status.sort();   // Order A-Z
+        addOptions("txt_status", status);
+    }
+
+    // Add options into <select>
+    function addOptions(domElement, status) {
+        var select = document.getElementsByName(domElement)[0];
+        //console.log(status[0].vchName);
+
+        for (value in status) {
+            var option = document.createElement("option");
+            //option.value = status[value].idRelevance;
+            option.text = status[value].vchDescription;
+            select.add(option);
+            select.value = stat;
+        }
+    }
+}
+
+const chargeDate = async (res_date) => {
+    const year = res_date.getFullYear();
+    const p_month = res_date.getMonth() + 1;
+    var month = p_month > 9 ? p_month : "0" + p_month;
+    var day = res_date.getDate() > 9 ? res_date.getDate() : "0" + res_date.getDate();
+
+    dateFormatted = year + "-" + month + "-" + day;
+    //console.log(dateFormatted)
+    document.getElementById("txt_date").value = dateFormatted;
+}
+
+
+function charge_editForm(date, status) {
+    chargeDate(date)
+    charge_status(status);
+}
+
+
+
+
 document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('btnNewLoan')) {
         charge_newLoanForm();
     }
 
     if (event.target.classList.contains('btnEdit_L')) {
-        const idEdit_Loan = event.target.getAttribute('data-idEdit_Loan'); console.log("Editado: ", idEdit_Loan);
+        const idEdit_Loan = event.target.getAttribute('data-idEdit_Loan'); //console.log("Editado: ", idEdit_Loan);
         showLoan_EditForm(idEdit_Loan);
     }
 
@@ -163,35 +208,25 @@ const charge_newLoanForm = async () => {
     });
 }
 
-
-
-
-
-
-const chargeDate = async (res_date) => {
-    const year = res_date.getFullYear();
-    const p_month = res_date.getMonth() + 1;
-    var month = p_month > 9 ? p_month : "0" + p_month;
-    var day = res_date.getDate() > 9 ? res_date.getDate() : "0" + res_date.getDate();
-
-    dateFormatted = year + "-" + month + "-" + day;
-    //console.log(dateFormatted)
-    document.getElementById("txt_date").value = dateFormatted;
-}
-
-
-
 const showLoan_EditForm = async (idEdit_Loan) => {
 
+    const existingModal = document.getElementById('frm_editModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
     const row_infoLoan = await main.getLoanById(idEdit_Loan);
-    //console.log(row_infoLoan[0].dtDate);
+    //console.log(row_infoLoan[0]);
+
+    const dt = row_infoLoan[0].dtDate;
+    const sts =row_infoLoan[0].vchStatus;
 
     
     // Creat edit form
     modalHTML = `
-    <div id="frm_insertModal">
+    <div id="frm_editModal">
         <div class="insert_form">
-            <h2>New Loan</h2>
+            <h2>Edit Loan</h2>
             <div class="inputForm">
                 <label for="txt_borrower">Borrower:</label>
                 <input type="text" id="txt_borrower" name="txt_borrower" value="${row_infoLoan[0].vchBorrower}">
@@ -227,8 +262,8 @@ const showLoan_EditForm = async (idEdit_Loan) => {
             </div>
 
             <div class="btn_EditForm">
-                <Button id="btnAddLoan"> ADD LOAN</Button>
-                <Button id="btnCancelLoan"> CANCEL</Button>
+                <img src="../imgResources/confirm_Icon.png" id="saveEdit">
+                <img src="../imgResources/cancel_Icon.png" id="cancelEdit">
             </div>
         </div>
     </div>
@@ -246,10 +281,12 @@ const showLoan_EditForm = async (idEdit_Loan) => {
     const amount = document.getElementById('txt_amount');
     const remaining = document.getElementById('txt_remaining');
     const status = document.getElementById('txt_status');
-    //const date = document.getElementById('txt_date');
-    chargeDate(row_infoLoan[0].dtDate);
-    const saveEdit = document.getElementById('btnAddLoan');
-    const cancelEdit = document.getElementById('btnCancelLoan');
+    const date = document.getElementById('txt_date');
+
+    charge_editForm(dt, sts);
+
+    const saveEdit = document.getElementById('saveEdit');
+    const cancelEdit = document.getElementById('cancelEdit');
     cancelEdit.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
 
@@ -275,7 +312,7 @@ const showLoan_EditForm = async (idEdit_Loan) => {
 
 
         await main.updateLoan(updated_loanData);
-        showMessage("Detail updated!", "success", `Check details at ${date.value} changed successfully.`);
+        showMessage("Loan updated!", "success", `Check details at ${date.value} changed successfully.`);
         init();
         modal.remove();
     });
@@ -294,6 +331,7 @@ const deleteLoanInfo = async (idDelete_Loan) => {
     await main.deleteLoan(idDelete_Loan);
 
 }
+
 
 
 
