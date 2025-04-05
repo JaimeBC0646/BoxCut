@@ -8,10 +8,10 @@ const newDtPurchaseDiv = document.getElementById('newDtPurchaseDiv');
 function chargeForm() {
     charge_branchstores();
     charge_revelances();
+    charge_categories();
 }
 
 
-/* Charge data: Branchstore  -|START|- */
 let branchstores = [];
 const charge_branchstores = async () => {
     branchstores = await main.getBranchstores();
@@ -35,10 +35,7 @@ const charge_branchstores = async () => {
         }
     }
 }
-/* Charge data: Branchstore  -|END|- */
 
-
-/* Charge data: Relevance  -|START|- */
 let revelances = [];
 const charge_revelances = async () => {
     revelances = await main.getRelevances();
@@ -62,7 +59,31 @@ const charge_revelances = async () => {
         }
     }
 }
-/* Charge data: Relevance  -|END|- */
+
+let categories = [];
+const charge_categories = async () => {
+    categories = await main.getCategories();
+    //console.log(revelances)
+
+    if (categories) {
+        categories.sort();   // Order A-Z
+        addOptions("txt_category", categories);
+    }
+
+    // Add options into <select>
+    function addOptions(domElement, categories) {
+        var select = document.getElementsByName(domElement)[0];
+        //console.log(categories[0].vchName);
+
+        for (value in categories) {
+            var option = document.createElement("option");
+            option.value = categories[value].idCategory;
+            option.text = categories[value].vchDescription;
+            select.add(option);
+        }
+    }
+}
+
 
 
 
@@ -130,13 +151,17 @@ const price = document.getElementById('txt_price');
 const quantity = document.getElementById('txt_quantity');
 const branchstore = document.getElementById('txt_store');
 const relevance = document.getElementById('txt_relevance');
+const category = document.getElementById('txt_category');
 
 newDtPurchaseDiv.addEventListener('submit', async (err) => {
     err.preventDefault();
     //console.log('Date: '+ dateFilter);
     let newDetailPurchase = {};
 
-    if (product.value == "" || description.value == "" || price.value == "" || quantity.value == "" || branchstore.value == "Select branchstore" || relevance.value == "Select relevance") {
+    if (product.value == "" || description.value == "" || price.value == "" || quantity.value == "" 
+        || branchstore.value == "Select branchstore" || relevance.value == "Select relevance" 
+        || category.value == "Select category")
+        {
         showMessage("Please complete the form, filling all the spaces", "error");
         // console.log("LLENR CAMPOS");
         return;
@@ -150,7 +175,8 @@ newDtPurchaseDiv.addEventListener('submit', async (err) => {
         //subtotal is auto
         idPurchase_fk: 0,
         idBranchstore_fk: branchstore.value,
-        idRelevance_fk: relevance.value
+        idRelevance_fk: relevance.value,
+        idCategory_fk: category.value
 
     }
     purchaseDetails.push(newDetailPurchase);
@@ -279,6 +305,7 @@ function update_DtPreview() {
                 <div class="infoDt">
                     <p><strong>Description: </strong>${detail.vchDescription}</p>
                     <p><strong>Relevance: </strong>${revelances[detail.idRelevance_fk - 1].vchDescription}</p>
+                    <p><strong>Category: </strong>${categories[detail.idCategory_fk - 1].vchDescription}</p>
                 </div>
             </div>
             <button onclick="removeDetail(${index})">Delete</button>

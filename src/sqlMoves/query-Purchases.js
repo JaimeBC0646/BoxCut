@@ -161,7 +161,7 @@ function renderdtPurchases(dtPurchases) {
                 <td>${dtPurchase.Relevance}</td>
                 <td>
                     <div class="btnActions">
-                        <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_dtPurchase"  data-idEdit_DT="${dtPurchase.id_dtP}" data-idB_fk="${dtPurchase.idB_fk}" data-idR_fk="${dtPurchase.idR_fk}" data-idP_fk="${dtPurchase.idP_fk}" >
+                        <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_dtPurchase"  data-idEdit_DT="${dtPurchase.id_dtP}" data-idB_fk="${dtPurchase.idB_fk}" data-idR_fk="${dtPurchase.idR_fk}" data-idP_fk="${dtPurchase.idP_fk}" data-idC_fk="${dtPurchase.idC_fk}" >
                         <img src ="../imgResources/deleteIcon.png" id="btnActionP" class="btnDelete_dtPurchase"  data-idDelete_DT="${dtPurchase.id_dtP}" >
                     </div>
                     
@@ -177,10 +177,11 @@ function renderdtPurchases(dtPurchases) {
 
 
 /* CHARGING FORM */
-function charge_editForm(idDt, idB, idR) {
+function charge_editForm(idDt, idB, idR, idC) {
     chargeDate(idDt)
     charge_branchstores(idB);
     charge_revelances(idR);
+    charge_categories(idC);
 }
 
 const chargeDate = async (id_date) => {
@@ -199,8 +200,6 @@ const chargeDate = async (id_date) => {
     document.getElementById("txt_date").value = dateFormatted;
 }
 
-
-/* Charge data: Branchstore  -|START|- */
 let branchstores = [];
 const charge_branchstores = async (idB) => {
     branchstores = await main.getBranchstores();
@@ -225,13 +224,8 @@ const charge_branchstores = async (idB) => {
         select.value = idB;
     }
 }
-/* Charge data: Branchstore  -|END|- */
 
-
-/* Charge data: Relevance  -|START|- */
 let revelances = [];
-let status = [];
-
 const charge_revelances = async (idR) => {
     revelances = await main.getRelevances();
     //console.log(revelances)
@@ -256,7 +250,32 @@ const charge_revelances = async (idR) => {
         }
     }
 }
-/* Charge data: Relevance  -|END|- */
+
+let category = [];
+const charge_categories = async (idC) => {
+    category = await main.getCategories();
+    //console.log(revelances)
+
+    if (category) {
+        category.sort();   // Order A-Z
+        addOptions("txt_category", category);
+    }
+
+    // Add options into <select>
+    function addOptions(domElement, category) {
+        var select = document.getElementsByName(domElement)[0];
+        //console.log(category[0].vchName);
+
+        for (value in category) {
+            var option = document.createElement("option");
+            option.value = category[value].idCategory;
+            option.text = category[value].vchDescription;
+            select.add(option);
+            select.value = idC;
+        }
+    }
+}
+
 
 
 document.addEventListener('click', async (event) => {
@@ -276,7 +295,8 @@ document.addEventListener('click', async (event) => {
         const idB_fk = event.target.getAttribute('data-idB_fk');
         const idR_fk = event.target.getAttribute('data-idR_fk');
         const idP_fk = event.target.getAttribute('data-idP_fk');
-        showDt_EditForm(idEdit_DT, idB_fk, idR_fk, idP_fk);
+        const idC_fk = event.target.getAttribute('data-idC_fk');
+        showDt_EditForm(idEdit_DT, idB_fk, idR_fk, idP_fk, idC_fk);
     }
 
     if (event.target.classList.contains('btnDelete_dtPurchase')) {
@@ -329,7 +349,7 @@ const query_IdP = async (dateF) => {
 };
 
 
-const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk) => {
+const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk, idC_fk) => {
 
     const existingModal = document.getElementById('frm_editModal');
     if (existingModal) {
@@ -379,6 +399,13 @@ const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk) => {
             </div>
 
             <div class="inputForm">
+                <label for="category">Relevance:</label>
+                <select id="txt_category" name="txt_category">
+                    <option>Select category</option>
+                </select>
+            </div>
+
+            <div class="inputForm">
                 <label>Date:</label>
                 <input type="date" id="txt_date">
             </div>
@@ -394,7 +421,7 @@ const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk) => {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
     const modal = document.getElementById('frm_editModal');
-    charge_editForm(idP_fk, idB_fk, idR_fk);
+    charge_editForm(idP_fk, idB_fk, idR_fk, idC_fk);
 
     const product = document.getElementById('txt_product');
     const description = document.getElementById('txt_description');
@@ -403,6 +430,7 @@ const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk) => {
     const quantity = document.getElementById('txt_quantity');
     const branchstore = document.getElementById('txt_store');
     const relevance = document.getElementById('txt_relevance');
+    const category = document.getElementById('txt_category');
     const date = document.getElementById('txt_date');
     //console.log(date.value)
     const saveEdit = document.getElementById('saveEdit');
@@ -428,7 +456,8 @@ const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk) => {
             //subtotal is auto
             idPurchase_fk: 0,
             idBranchstore_fk: branchstore.value,
-            idRelevance_fk: relevance.value
+            idRelevance_fk: relevance.value,
+            idCategory_fk: category.value
         }
 
         await query_IdP(date.value);

@@ -65,6 +65,16 @@ async function getRelevances() {
   return results;
 }
 
+async function getCategories() {
+
+  const query = "SELECT * FROM tbl_category";
+
+  const conn = await getConnection();
+  const results = await conn.query(query);
+  //console.log(results)
+  return results;
+}
+
 
 
 
@@ -81,18 +91,22 @@ async function newpurchase(detailpurchase) {
     detailpurchase.idPurchase_fk = parseInt(detailpurchase.idPurchase_fk);
     detailpurchase.idBranchstore_fk = parseInt(detailpurchase.idBranchstore_fk);
     detailpurchase.idRelevance_fk = parseInt(detailpurchase.idRelevance_fk);
+    detailpurchase.idCategory_fk = parseInt(detailpurchase.idCategory_fk);
 
     // CALL SP
     const result = await conn.query(
-      'CALL SP_Insert_DtPurchase(?, ?, ?, ?, ?, ?, ?)',
+      'CALL SP_Insert_DtPurchase(?, ?, ?, ?, ?, ?, ?, ?)',
       [
         detailpurchase.vchProduct,
         detailpurchase.vchDescription,
         detailpurchase.fltPrice,
         detailpurchase.intQuantity,
+
         detailpurchase.idPurchase_fk,
         detailpurchase.idBranchstore_fk,
-        detailpurchase.idRelevance_fk
+        detailpurchase.idRelevance_fk,
+        detailpurchase.idCategory_fk
+        
       ]
     );
 
@@ -194,7 +208,7 @@ async function updateDetailPurchase(detailpurchase) {
 
     // CALL SP
     const result = await conn.query(
-      'CALL SP_UpdateDetailInfo(?, ?, ?, ?, ?, ?, ?, ?)',
+      'CALL SP_UpdateDetailInfo(?, ?, ?, ?, ?, ?, ?, ?,?)',
       [
         detailpurchase.id_dtPurchase,
         detailpurchase.vchProduct,
@@ -204,7 +218,8 @@ async function updateDetailPurchase(detailpurchase) {
         //subtotal is auto
         detailpurchase.idPurchase_fk,
         detailpurchase.idBranchstore_fk,
-        detailpurchase.idRelevance_fk
+        detailpurchase.idRelevance_fk,
+        detailpurchase.idCategory_fk
       ]
     );
 
@@ -380,6 +395,7 @@ module.exports = {
   getIdByDate,
   getBranchstores,
   getRelevances,
+  getCategories,
 
   newpurchase,
   updatePurchase,
