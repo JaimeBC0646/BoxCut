@@ -2,8 +2,7 @@
 SQLyog Ultimate v11.11 (64 bit)
 MySQL - 5.5.5-10.4.22-MariaDB : Database - db_boxcut
 *********************************************************************
-*/
-
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -105,7 +104,7 @@ CREATE TABLE `tbl_incomes` (
   `fltAmountM` float NOT NULL,
   `dtDate` date NOT NULL,
   PRIMARY KEY (`idIncome`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `tbl_incomes` */
 
@@ -187,11 +186,11 @@ CREATE TABLE `tbl_strikes` (
   `dtDate` date NOT NULL,
   `vchStatus` varchar(50) NOT NULL,
   PRIMARY KEY (`idStrike`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `tbl_strikes` */
 
-insert  into `tbl_strikes`(`idStrike`,`vchName`,`vchDescription`,`dtDate`,`vchStatus`) values (1,'Strike #1 - Boleto de salida a Monterrey, NL','De a fuerza aplicar el anticipo que dejo la madre de Ruth para poder aprovechar con el descuento.','2025-03-18','CURRENT'),(2,'Strike #2 - Contrato de IZZI','Correo y numero de telefono para contrato de izzi.','2025-01-12','CURRENT'),(3,'Strike #3 - Tarjeta de Bus Feria','Forzar a comprar la tajeta para bus (No funcionaba al inicio).','2025-01-19','FORGIVEN'),(4,'Strike #4 - Perfume roto','Romper perfume obsequiado y nunca reponer','2025-01-23','CURRENT'),(5,'Strike #5 - Corte de cabello','No se atendio en el momento.','2025-01-26','FORGIVEN'),(6,'Strike #6 - Alzar la voz / Regaño por molestia','Motivo: no se fue bien la suciedad del baño, no es razon, su molestia fue por irresponsabilidad de d','2025-02-12','CURRENT'),(7,'Strike #7 - Balon no recuperado','Permitio que el balon fuera extraviado, quedo en un trato con el responsable pero nunca se llevo a c','2025-03-08','CURRENT'),(8,'Strike #8 - Cuenta de Amazon Prime','Correo contrato de Amazon Prime.','0000-00-00','CURRENT'),(9,'Strike #9 - Permitir tomar cosas','No menciono sobre mis cosas que estaban en el refrigerador','2025-03-31','CURRENT');
+insert  into `tbl_strikes`(`idStrike`,`vchName`,`vchDescription`,`dtDate`,`vchStatus`) values (1,'Strike #1 - Boleto de salida a Monterrey, NL','De a fuerza aplicar el anticipo que dejo la madre de Ruth para poder aprovechar con el descuento.','2025-03-18','CURRENT'),(2,'Strike #2 - Contrato de IZZI','Correo y numero de telefono para contrato de izzi.','2025-01-12','CURRENT'),(3,'Strike #3 - Tarjeta de Bus Feria','Forzar a comprar la tajeta para bus (No funcionaba al inicio).','2025-01-19','FORGIVEN'),(4,'Strike #4 - Perfume roto','Romper perfume obsequiado y nunca reponer','2025-01-23','CURRENT'),(5,'Strike #5 - Corte de cabello','No se atendio en el momento.','2025-01-26','FORGIVEN'),(6,'Strike #6 - Alzar la voz / Regaño por molestia','Motivo: no se fue bien la suciedad del baño, no es razon, su molestia fue por irresponsabilidad de d','2025-02-12','CURRENT'),(7,'Strike #7 - Balon no recuperado','Permitio que el balon fuera extraviado, quedo en un trato con el responsable pero nunca se llevo a cabo ($289) ','2025-03-08','CURRENT'),(8,'Strike #8 - Cuenta de Amazon Prime','Correo contrato de Amazon Prime.','0000-00-00','CURRENT'),(9,'Strike #9 - Permitir tomar cosas','No menciono sobre mis cosas que estaban en el refrigerador','2025-03-31','CURRENT'),(10,'Strike #10 - Puerta trasera abierta','Dejar puerta trasera abierta\n, (recuerdo que la cerre hasta con cerradura)','2025-04-04','CURRENT');
 
 /* Trigger structure for table `tbl_dt_purchases` */
 
@@ -432,6 +431,26 @@ BEGIN
     END */$$
 DELIMITER ;
 
+/* Procedure structure for procedure `SP_UpdateTotalPurchase` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `SP_UpdateTotalPurchase` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_UpdateTotalPurchase`(in id_dtP int)
+BEGIN
+	DECLARE sumDt FLOAT;
+	
+	SELECT SUM(fltSubtotal)
+	INTO sumDt 
+	FROM tbl_dt_purchases 
+	WHERE idPurchase_fk = id_dtP;
+    
+    
+	update tbl_purchases SET fltTotal = sumDt WHERE idPurchase = id_dtP;
+    END */$$
+DELIMITER ;
+
 /* Procedure structure for procedure `SP_UpdateTotalPurchase_gen` */
 
 /*!50003 DROP PROCEDURE IF EXISTS  `SP_UpdateTotalPurchase_gen` */;
@@ -473,7 +492,7 @@ DROP TABLE IF EXISTS `vw_purchasedetail`;
 /*!50001 CREATE TABLE  `vw_purchasedetail`(
  `id_dtP` int(11) ,
  `PoS` varchar(100) ,
- `Description` varchar(100) ,
+ `Description` varchar(200) ,
  `Price` float ,
  `Quantity` int(11) ,
  `Subtotal` float ,
@@ -498,7 +517,7 @@ DROP TABLE IF EXISTS `vw_tidydetails`;
  `id_dtP` int(11) ,
  `Date_Purchase` date ,
  `PoS` varchar(100) ,
- `Description` varchar(100) ,
+ `Description` varchar(200) ,
  `Price` float ,
  `Quantity` int(11) ,
  `Subtotal` float ,
