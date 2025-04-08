@@ -336,6 +336,7 @@ function clearForm() {
     quantity.value = '';
     branchstore.selectedIndex = 0;
     relevance.selectedIndex = 0;
+    category.selectedIndex = 0;
 }
 
 
