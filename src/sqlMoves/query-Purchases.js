@@ -32,7 +32,9 @@ date.addEventListener('change', () => {
 
 
 
-/*Query purchases    START*/
+
+
+/* ---| Query Purchases |--- */
 const purchasesList = document.getElementById('purchase')
 let purchases = []
 
@@ -109,14 +111,12 @@ async function init() {
         renderdtPurchases(dtPurchases);
     }
 }
-/*Query purchases    END*/
 
 
 
 
 
-
-/*Query Detailpurchases   START*/
+/* ---| Query Detailpurchases|--- */
 const dtPurchasesList = document.getElementById('dtPurchase')
 let dtPurchases = []
 
@@ -130,11 +130,12 @@ function renderdtPurchases(dtPurchases) {
             <th> PRODUCT OR SERVICE </th>
             <th> DESCRIPTION </th>
             <th> PRICE </th>
-            <th> QUANTITY </th>
+            <th> QUANT </th>
 
             <th> SUBTOTAL </th>
             <th> STORE / PLACE </th>
             <th> RELEVANCE </th>
+            <th> CATEGORY </th>
             <th> ACTIONS </th>
         </tr>
     </thead>`;
@@ -159,6 +160,7 @@ function renderdtPurchases(dtPurchases) {
                 <td align="right">$${dtPurchase.Subtotal}.00</td>
                 <td align="center">${dtPurchase.Branchstore_Name}</td>
                 <td>${dtPurchase.Relevance}</td>
+                <td>${dtPurchase.ProductCategory}</td>
                 <td>
                     <div class="btnActions">
                         <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_dtPurchase"  data-idEdit_DT="${dtPurchase.id_dtP}" data-idB_fk="${dtPurchase.idB_fk}" data-idR_fk="${dtPurchase.idR_fk}" data-idP_fk="${dtPurchase.idP_fk}" data-idC_fk="${dtPurchase.idC_fk}" >
@@ -172,6 +174,19 @@ function renderdtPurchases(dtPurchases) {
         dtPurchasesList.innerHTML += tableHTML += `</tbody></table>`;
     }
 }
+
+const getDetailpurchases = async (idPurchase) => {
+    /*console.log(idVenta);*/
+    dtPurchases = await main.getDetailPurchases(idPurchase);
+    renderdtPurchases(dtPurchases);
+
+}
+
+async function init2(idVenta) {
+    /*console.log(idVenta);*/
+    await getDetailpurchases(idVenta);
+}
+
 
 
 
@@ -278,6 +293,8 @@ const charge_categories = async (idC) => {
 
 
 
+
+
 document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('btnView_dtPurchase')) {
         const idPurchase = event.target.getAttribute('data-idPurchase');   //console.log(idPurchase);
@@ -315,12 +332,9 @@ document.addEventListener('click', async (event) => {
     }
 });
 
-const getDetailpurchases = async (idPurchase) => {
-    /*console.log(idVenta);*/
-    dtPurchases = await main.getDetailPurchases(idPurchase);
-    renderdtPurchases(dtPurchases);
 
-}
+
+
 
 var new_IdP = 0;
 const query_IdP = async (dateF) => {
@@ -347,7 +361,6 @@ const query_IdP = async (dateF) => {
         }
     }
 };
-
 
 const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk, idC_fk) => {
 
@@ -480,26 +493,14 @@ const showDt_EditForm = async (id_dtP_edit, idB_fk, idR_fk, idP_fk, idC_fk) => {
 
 }
 
-
-
-
 const deleteDetail = async (id_dtP_del) => {
     /*console.log(idVenta);*/
     await main.deleteDetailPurchases(id_dtP_del);
 
 }
 
-async function init2(idVenta) {
-    /*console.log(idVenta);*/
-    await getDetailpurchases(idVenta);
-}
-/*Query Detailpurchases   END*/
 
 
 
 /*  -----| CHARGE VIEW |-----   */
 init();
-
-
-
-

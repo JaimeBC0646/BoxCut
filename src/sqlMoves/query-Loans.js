@@ -70,7 +70,6 @@ const chargeDate = async (res_date) => {
     document.getElementById("txt_date").value = dateFormatted;
 }
 
-
 function charge_editForm(date, status) {
     chargeDate(date)
     charge_status(status);

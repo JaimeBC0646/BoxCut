@@ -35,23 +35,23 @@ date.addEventListener('change', () => {
 
 
 document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('btnEdit_dtPurchase')) {
-        const idEdit_Loan = event.target.getAttribute('data-idEdit_Loan');   //console.log("Editado: ", idEdit_Loan);
-        showLoan_EditForm(idEdit_Loan);
+    if (event.target.classList.contains('btnEdit_Income')) {
+        const idEdit_Income = event.target.getAttribute('data-idEdit_Income');   //console.log("Editado: ", idEdit_Income);
+        showIncome_EditForm(idEdit_Income);
     }
 });
 
 
 
-const showLoan_EditForm = async (idEdit_Loan) => {
+const showIncome_EditForm = async (idEdit_Income) => {
 
     const existingModal = document.getElementById('frm_editModal');
     if (existingModal) {
         existingModal.remove();
     }
 
-    const row_infoLoan = await main.getLoanById(idEdit_Loan);
-    console.log(row_infoLoan[0]);
+    const row_infoIncome = await main.getIncomeById(idEdit_Income);
+    console.log(row_infoIncome[0]);
 
     /*
     // Creat edit form
@@ -61,7 +61,7 @@ const showLoan_EditForm = async (idEdit_Loan) => {
             <h2>Edit Purchase Detail</h2>
             <div class="inputForm">
                 <label for="txt_product">Product:</label>
-                <input type="text" id="txt_product" name="txt_product" value="${row_infoLoan[0].vchProduct}">
+                <input type="text" id="txt_product" name="txt_product" value="${row_infoIncome[0].vchProduct}">
             </div>
 
             <div class="inputForm">
@@ -71,12 +71,12 @@ const showLoan_EditForm = async (idEdit_Loan) => {
 
             <div class="inputForm">
                 <label for="price">Price:</label>
-                <input type="text" id="txt_price" name="price" value="${row_infoLoan[0].fltPrice}">
+                <input type="text" id="txt_price" name="price" value="${row_infoIncome[0].fltPrice}">
             </div>
 
             <div class="inputForm">
                 <label for="txt_quantity">Quantity:</label>
-                <input type="number" id="txt_quantity" name="txt_quantity" value="${row_infoLoan[0].intQuantity}">
+                <input type="number" id="txt_quantity" name="txt_quantity" value="${row_infoIncome[0].intQuantity}">
             </div>
 
             <div class="inputForm">
@@ -110,17 +110,13 @@ const showLoan_EditForm = async (idEdit_Loan) => {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
     const modal = document.getElementById('frm_editModal');
-    charge_editForm(idP_fk, idB_fk, idR_fk);
 
-    const product = document.getElementById('txt_product');
-    const description = document.getElementById('txt_description');
-    description.value = row_infoLoan[0].vchDescription;
-    const price = document.getElementById('txt_price');
-    const quantity = document.getElementById('txt_quantity');
-    const branchstore = document.getElementById('txt_store');
-    const relevance = document.getElementById('txt_relevance');
+    const issuerName = document.getElementById('txt_issuerName');
+    const reason = document.getElementById('txt_reason');
+    const amount = document.getElementById('txt_amount');
     const date = document.getElementById('txt_date');
     date.value = inDate;
+
     const saveEdit = document.getElementById('saveEdit');
     const cancelEdit = document.getElementById('cancelEdit');
     cancelEdit.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -171,30 +167,28 @@ const showLoan_EditForm = async (idEdit_Loan) => {
 
 
 
-/*Query loans    START*/
-const loansList = document.getElementById('loan')
-let loans = []
+/*Query incomes    START*/
+const incomesList = document.getElementById('income')
+let incomes = []
 
-function renderLoans(loans) {
-    //console.log("compras: ", loans)
-    loansList.innerHTML = '';
+function renderIncomes(incomes) {
+    //console.log("compras: ", incomes)
+    incomesList.innerHTML = '';
 
     let tableHTML = `<table>
     <thead>
         <tr>
-            <th>BORROWER</th>
-            <th>DESCRIPTION</th>
+            <th>ISSUER</th>
+            <th>REASON</th>
             <th>AMOUNT</th>
             <th>DATE</th>
-            <th>REMAINING</th>
-            <th>STATUS</th>
             <th>ACTIONS</th>
         </tr>
     </thead>
     <tbody>`;
 
-    if (loans.length == 0) {
-        loansList.innerHTML += tableHTML +=
+    if (incomes.length == 0) {
+        incomesList.innerHTML += tableHTML +=
             `<tbody>
                 <tr>
                     <td align="center" colspan="3"> <h3><< NO DATA TO SHOW >></h3> </td>
@@ -202,36 +196,31 @@ function renderLoans(loans) {
             </tbody></table>`;
     }
     else {
-        loans.forEach((loan) => {
-            var colorStatus = (loan.vchStatus == 'PAID'? 'green' : 'red');
+        incomes.forEach((income) => {
             tableHTML += `
             <tr>
-                <td><b>${loan.vchBorrower}</b></td>
-                <td width="20%" ><b>${loan.vchDescription}</b></td>
-                <td align="right"><b>$${loan.fltAmountM}.00</b></td>
-                <td><b>${loan.dtDateFormated}</b></td>
-                <td align="right"><b>$${loan.fltRemaining}.00</b></td>
-
-                <td style="color: ${colorStatus}";> <b>${loan.vchStatus}</b></td>
-
+                <td><b>${income.vchIssuerName}</b></td>
+                <td width="20%" ><b>${income.vchReason}</b></td>
+                <td align="right"><b>$${income.fltAmountM}.00</b></td>
+                <td><b>${income.dtDateFormated}</b></td>
                 <td>
                     <div class="btnActions">
-                        <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_dtPurchase"  data-idEdit_Loan="${loan.idLoan}" >
-                        <img src ="../imgResources/deleteIcon.png" id="btnActionP" class="btnDelete_dtPurchase"  data-idDelete_Loan="${loan.idLoan}" >
+                        <img src ="../imgResources/editIcon.png" id="btnActionP" class="btnEdit_income"  data-idEdit_Income="${income.idIncome}" >
+                        <img src ="../imgResources/deleteIcon.png" id="btnActionP" class="btnDelete_income"  data-idDelete_Income="${income.idIncome}" >
                     </div>
                     
                 </td>
             </tr>
             `;
         });
-        loansList.innerHTML += tableHTML += `</tbody></table>`;
+        incomesList.innerHTML += tableHTML += `</tbody></table>`;
     }
 
 
 
 }
 
-const getLoans = async () => {
+const getIncomes = async () => {
     let option;
 
     if (rdbGeneral.checked) {
@@ -252,16 +241,16 @@ const getLoans = async () => {
     const day = strDate.substring(8, 10);
     */
 
-    loans = await main.getLoans();
+    incomes = await main.getIncomes();
     /*
     console.log("date: "+ date.value);
     console.log("ASD op:"+ option+" yy:"+year+" mm:"+month+" dd:"+day);
     */
-    renderLoans(loans);
+    renderIncomes(incomes);
 }
 
 
-/*Query loans    END*/
+/*Query incomes    END*/
 
 
 
@@ -271,7 +260,7 @@ const getLoans = async () => {
 
 async function init() {
     if (rdbGeneral.checked || (rdbFilter.checked && date.value != null)) {
-        await getLoans();
+        await getIncomes();
     }
 }
 

@@ -303,7 +303,6 @@ async function getLoans() {
 
   return results;
 }
-getLoans
 
 async function getLoanById(idL) {
   let query = "SELECT * FROM tbl_loans WHERE idLoan =" + idL + ";";
@@ -353,6 +352,108 @@ async function deleteLoan(id) {
   //console.log(results)
 }
 
+
+/* -----| INCOMES |-----*/
+async function newIncome(income) {
+  try {
+    const conn = await getConnection();
+
+    // Transform values for each column
+    income.fltAmountM = parseFloat(loan.fltAmountM);
+
+
+    // CALL SP
+    const result = await conn.query(
+      'CALL SP_Insert_Income(?, ?, ?, ?)',
+      [
+        income.vchIssuerName,
+        income.vchReason,
+        income.fltAmountM,
+        income.dtDate
+      ]
+    );
+
+    /* // Mostrar notificación
+    new Notification({
+      title: 'Purchase complete',
+      body: 'New details registrated'
+    }).show();
+    */
+
+    return result; // Retorna el resultado de la inserción
+  }
+  catch (error) {
+    console.error("Error al registrar la compra:", error);
+    throw error; // Relanzar el error para manejarlo en otro lado si es necesario
+  }
+}
+
+async function getIncomes() {
+  let query = "";
+  query = "SELECT vchIssuerName, vchReason, fltAmountM, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated FROM tbl_incomes"
+
+  /*if (option === "general") {
+    query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltTotal FROM tbl_purchases ORDER BY dtDate DESC"
+  }
+  else if (option === "filter") {
+    query = "SELECT idPurchase, DATE_FORMAT(dtDate, '%a, %d/%m/%y') AS dtDateFormated, fltTotal"
+      + " FROM tbl_purchases"
+      + " WHERE YEAR(dtDate) = " + year
+      + " AND MONTH(dtDate) = " + month
+      + " AND DAY(dtDate) =" + day
+  }
+      */
+
+  const conn = await getConnection();
+  const results = await conn.query(query)
+
+  return results;
+}
+
+async function getIncomeById(id_I) {
+  let query = "SELECT * FROM tbl_incomes WHERE idIncome =" + id_I + ";";
+
+  const conn = await getConnection();
+  const results = await conn.query(query)
+  //console.log(results)
+  return results;
+}
+
+async function updateIncome(income) {
+  try {
+    const conn = await getConnection();
+
+    // Transform values for each column
+    income.fltAmountM = parseFloat(income.fltAmountM);
+
+    // CALL SP
+    const result = await conn.query(
+      'CALL SP_UpdateIncomeInfo(?, ?, ?, ?, ?, ?, ?)',
+      [
+        income.vchIssuerName,
+        income.vchReason,
+        income.fltAmountM,
+        income.dtDate,
+        income.idIncome
+      ]
+    );
+
+    return result; // Retorna el resultado de la inserción
+  }
+  catch (error) {
+    console.error("Error al registrar la compra:", error);
+    throw error; // Relanzar el error para manejarlo en otro lado si es necesario
+  }
+}
+
+async function deleteIncome(id) {
+  //console.log(id);
+
+  const conn = await getConnection();
+  const results = await conn.query("DELETE FROM tbl_incomes WHERE idIncome = " + id);
+
+  //console.log(results)
+}
 
 
 
@@ -412,6 +513,12 @@ module.exports = {
   getLoanById,
   updateLoan,
   deleteLoan,
+
+  newIncome,
+  getIncomes,
+  getIncomeById,
+  updateIncome,
+  deleteIncome,
   //getLoanByFilter,
   /*
   newInvestment,

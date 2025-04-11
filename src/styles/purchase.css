@@ -39,7 +39,7 @@ label {
     /*border: solid cyan;*/
 }
 
-.loansDiv {
+.loansDiv, .incomesDiv {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -51,7 +51,7 @@ label {
     /*border: solid cyan;*/
 }
 
-.btnNewLoan{
+.btnNewLoan, .btnNewIncome{
     margin-top: 1rem;
 }
 
